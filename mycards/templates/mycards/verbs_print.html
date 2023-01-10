@@ -1,0 +1,100 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+  <main class="container">
+    <!-- CARDS -->
+    <div class="row">
+      {% for verb in verbs_info %}
+      <div class="col-3 p-0 m-0">
+        <div class="card" style="background-color: white; border-left: 10px solid #104080">
+
+          <div class="embed-responsive embed-responsive-16by9">
+             <img class="card-img-top embed-responsive-item" src="{% static 'img/'%}{{ verb.picture }}" alt="" />
+          </div>
+          <div class="card-body py-0">
+            <h1 class="h1 card-title text-right my-0 mr-0" style="font-size: 68px;">
+              {% with positions=verb.vocal_name|letter_positions %}
+                {% with sliceLetter1=positions|getSliceLetter1 %}
+                  {% with sliceLetter2=positions|getSliceLetter2 %}
+                    {% with sliceLetter3=positions|getSliceLetter3 %}
+                      {% with sliceLetter4=positions|getSliceLetter4 %}
+                        {% if verb.binyan_id == 1 %}
+                          {% with sliceLetter5=positions|getSliceLetter5 %}
+                          <span style="color:#A00000">{{ verb.vocal_name|slice:sliceLetter1 }}</span>{{ verb.vocal_name|slice:sliceLetter2 }}{{ verb.vocal_name|slice:sliceLetter3 }}<span style ="color:#A00000">{{ verb.vocal_name|slice:sliceLetter4 }}</span>{{ verb.vocal_name|slice:sliceLetter5 }}
+                          {% endwith %}
+                        {% elif verb.binyan_id == 2 %}
+                          <span style="color:#A00000">{{ verb.vocal_name|slice:sliceLetter1 }}</span>{{ verb.vocal_name|slice:sliceLetter2 }}{{ verb.vocal_name|slice:sliceLetter3 }}{{ verb.vocal_name|slice:sliceLetter4 }}
+                        {% elif verb.binyan_id == 3 %}
+                          <span style="color:#A00000">{{ verb.vocal_name|slice:sliceLetter1 }}</span>{{ verb.vocal_name|slice:sliceLetter2 }}{{ verb.vocal_name|slice:sliceLetter3 }}<span style ="color:#A00000">{{ verb.vocal_name|slice:sliceLetter4 }}</span>ת
+                        {% elif verb.binyan_id > 4 %}
+                          <span style="color:#A00000">{{ verb.vocal_name|first }}</span>{{ verb.vocal_name|slice:"1:" }}
+                        {% endif %}
+                      {% endwith %}
+                    {% endwith %}
+                  {% endwith %}
+                {% endwith %}
+              {% endwith %}
+            </h1>
+            <p class="card-text p-0 m-0 mr-1 text-right" style="font-size: 20px; color: #80C0F0"><b>{{ verb.binyan_type }} {{ verb.binyan_name }}</b></p>
+            {% if verb.pronunciation|length < 8 %}
+            <p class="card-text pb-1 pt-0 m-0" style="font-size: 42px; color: #707070">[{{ verb.pronunciation }}]</p>
+            <table class="table mt-1 mb-1" >
+              <tbody style="font-size: 24px;">
+                <tr>
+                  <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.f1_name }}</td>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.m1_name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                  <td class="pb-1 pt-0 px-1 mb-0 mt-0 mx-1 text-center" style="border-top: 0; font-size: 20px; color: #808080">[{{ verb.f1_pronunciation }}]</td>
+                  <td class="pb-1 pt-0 px-1 mb-0 mt-0 mx-1 text-center" style="border-top: 0; font-size: 20px; color: #808080">[{{ verb.m1_pronunciation }}]</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.f2_name }}</td>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.m2_name }}</td>
+                </tr>
+              </tbody>
+            </table>
+            {% else %}
+            <p class="card-text pb-1 pt-0 m-0" style="font-size: 36px; color: #707070">[{{ verb.pronunciation }}]</p>
+            <p class="card-text pb-1 pt-0 m-0" style="font-size: 6px; color: white">1</p>
+            <table class="table mt-1 mb-1" >
+              <tbody style="font-size: 22px;">
+                <tr>
+                  <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.f1_name }}</td>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.m1_name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                  <td class="pb-1 pt-0 px-1 mb-0 mt-0 mx-1 text-center" style="border-top: 0; font-size: 18px; color: #808080">[{{ verb.f1_pronunciation }}]</td>
+                  <td class="pb-1 pt-0 px-1 mb-0 mt-0 mx-1 text-center" style="border-top: 0; font-size: 18px; color: #808080">[{{ verb.m1_pronunciation }}]</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.f2_name }}</td>
+                  <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center">{{ verb.m2_name }}</td>
+                </tr>
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+          {% if verb.translation|length < 12 %}
+            <div class="card-footer p-0 pl-3" style="background-color: #104080; color: white; font-size: 32px">{{ verb.translation | upper }}</div>
+          {% elif verb.translation|length < 14 %}
+            <div class="card-footer p-0 pl-3" style="background-color: #104080; color: white; font-size: 26px">{{ verb.translation | upper }}</div>
+            <div class="card-footer p-0 pl-3" style="background-color: #104080; color: #104080; font-size: 6px">1</div>
+          {% else %}
+            <div class="card-footer p-0 pl-3" style="background-color: #104080; color: white; font-size: 22px">{{ verb.translation | upper }}</div>
+            <div class="card-footer p-0 pl-3" style="background-color: #104080; color: #104080; font-size: 10px">1</div>
+          {% endif %}
+        </div>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+{% endblock %}

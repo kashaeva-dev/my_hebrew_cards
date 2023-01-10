@@ -1,0 +1,140 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+<main class="container g-0">
+    <p class="pt-2 m-0 text-center" style="font-size: 24px; color: #FF6600">ПРИЛАГАТЕЛЬНЫЕ</p>
+  <table class="table" style="font-size: 16px">
+          <tbody>
+          {% for word in adjectives_info %}
+            <tr>
+                {% if word.antonyms|length > 0 %}
+                <td class="pb-0 pt-1 pr-0 mb-0 mt-1 mx-0 text-center"><img src="{% static 'img/'%}{{ word.antonyms.picture }}" width="120" height="80" class="d-inline-block align-top mr-1 rounded" alt=""></td>
+                <td class="p-0 mr-3 text-left"><span style="font-size: 20px; color: #FF6600">{{ word.antonyms.translation }}</span>
+                  <table class="table table-borderless mt-1 mb-1" >
+                    <tbody style="font-size: 18px;">
+                        <tr>
+                          <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                          {% if word.f1_name != None %} <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.antonyms.f1_pronunciation }}]</span> {{ word.antonyms.f1_name }}</td>{% else %}<td class="pr-2 mr-0 text-right"></td> {% endif %}
+                          <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.antonyms.pronunciation }}]</span> <span style="font-size: 20px; color: #FF6600"><b>{{ word.antonyms.name }}</b></span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                          {% if word.f2_name != None %} <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.antonyms.f2_pronunciation }}]</span> {{ word.antonyms.f2_name }}</td>{% endif %}
+                          {% if word.m2_name != None %} <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.antonyms.m2_pronunciation }}]</span> {{ word.antonyms.m2_name }}</td>{% endif %}
+                        </tr>
+                    </tbody>
+                  </table>
+              </td>
+                {% else %}
+                <td class="pr-2 mr-0 text-right"></td>
+                <td class="pr-2 mr-0 text-right"></td>
+                {% endif %}
+                <td class="pr-5 mr-3 text-right"></td>
+                <td class="p-0 ml-5 text-left"><span style="font-size: 20px; color: #FF6600">{{ word.translation }}</span>
+                    {% if word.expressions|length > 0 %}
+                    <a class="btn btn-outline-dark py-0 px-1 m-2" data-toggle="collapse" href="#{{ word.translation }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}">+</a>
+                    {% endif %}
+                  <table class="table table-borderless mt-1 mb-1" >
+                    <tbody style="font-size: 18px;">
+                        <tr>
+                          <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                          {% if word.f1_name != None %} <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.f1_pronunciation }}]</span> {{ word.f1_name }}</td>{% else %}<td class="pr-2 mr-0 text-right"></td> {% endif %}
+                          <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.pronunciation }}]</span> <span style="font-size: 20px; color: #FF6600"><b>{{ word.name }}</b></span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+                          {% if word.f2_name != None %} <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.f2_pronunciation }}]</span> {{ word.f2_name }}</td>{% endif %}
+                          {% if word.m2_name != None %} <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right"><span style="color: #707070">[{{ word.m2_pronunciation }}]</span> {{ word.m2_name }}</td>{% endif %}
+                        </tr>
+                    </tbody>
+                  </table>
+                                    <div class="collapse" id="{{ word.translation }}">
+                  {% if word.expressions|length > 0 %}
+                                        <div class="card card-body p-0 m-0">
+                   <ul class="list-group list-group-flush p-0 m-0 text-right">
+                       {% for expression in word.expressions %}
+                      <li class="list-group-item pb-1"><span style="font-size: 20px; color: #FF6600">{{ expression.name }}</span><br>{{ expression.translation }} <span style="color: #707070">[{{ expression.pronunciation }}]</span>
+                      </li>
+                   </ul>
+                </div>
+                                    </div>
+                       {% endfor %}
+                  {% endif %}
+                </td>
+
+                <td class="pb-0 pt-1 pr-0 mb-0 mt-1 mx-0 text-center"><img src="{% static 'img/'%}{{ word.picture }}" width="120" height="80" class="d-inline-block align-top mr-1 rounded" alt=""></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+  <!--            <th scope="row"></th>
+              {% if word.other_forms|length > 0 or word.expressions|length > 0 %}
+              <td class="pr-2 mr-0 text-right">
+                <div class="card p-0 m-0">
+                  <ul class="list-group list-group-flush p-0 m-0">
+                    {% for other in word.other_forms %}
+                    <li class="list-group-item">{{ other.translation }} <span style="color: #707070">[{{ other.pronunciation }}]</span><span style="font-size: 22px; color: #CD5C5C"> {{ other.name }}</span>
+                    </li>
+                    {% endfor %}
+                      {% for expression in word.expressions %}
+                    <li class="list-group-item">
+                        {% if expression.answers|length > 0 %}
+                        <a class="btn btn-outline-dark py-0 px-1 m-2" data-toggle="collapse" href="#{{ expression.name }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}">
+    +
+  </a>{% endif %}{{ expression.translation }} <span style="color: #707070">[{{ expression.pronunciation }}]</span> <span style="font-size: 22px; color: #CD5C5C">{{ expression.name }}</span>
+                    <div class="collapse" id="{{ expression.name }}">
+                  {% if expression.answers|length > 0 %}
+                        <div class="card card-body p-0 m-0">
+                    <ul class="list-group list-group-flush p-0 m-0">
+                        {% for answer in expression.answers %}
+                      <li class="list-group-item">{{ answer.translation }} <span style="color: #707070">[{{ answer.pronunciation }}]</span><span style="font-size: 20px; color: #23418b"> {{ answer.expression }}</span>
+                      {% if answer.comment != None %}<a class="btn btn-outline-dark py-0 px-1 m-2" data-toggle="collapse" href="#{{ answer.pk }}" role="button" aria-expanded="false" aria-controls="{{ answer.pk }}">
+    !
+  </a>
+                          <div class="collapse" id="{{ answer.pk }}">
+                        <p class="p-0 m-0 text-right" style="font-size: 14px">{{answer.comment}}</p>
+                        </div>
+                      {% endif %}
+                      </li>
+                        {% endfor %}
+
+                    </ul>
+                  </div>
+                </div>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </td>
+              {% else %}
+                <td class="pr-2 mr-0 text-right"></td>
+              {% endif %}
+
+              {% if expression.answers|length > 0 %}
+                        <a class="btn btn-outline-dark py-0 px-1 m-2" data-toggle="collapse" href="#{{ expression.name }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}">
+    +
+  </a>{% endif %}{{ expression.translation }} <span style="color: #707070">[{{ expression.pronunciation }}]</span> <span style="font-size: 22px; color: #CD5C5C">{{ expression.name }}</span>
+                    <div class="collapse" id="{{ expression.name }}">
+                  {% if expression.answers|length > 0 %}
+                        <div class="card card-body p-0 m-0">
+                   <ul class="list-group list-group-flush p-0 m-0">
+                       {% for answer in expression.answers %}
+                      <li class="list-group-item">
+                          <div class="row" style="font-size: 16px">
+                              <div class="col-4 text-right">{{ answer.translation }}</div>
+                              <div class="col-3" style="color: #707070">[{{ answer.pronunciation }}]</div>
+                              <div class="col-3" style="font-size: 20px; color: #23418b">{{ answer.expression }}</div>
+                              <div class="col-1">
+                          {{ answer.translation }} <span style="color: #707070">[{{ answer.pronunciation }}]</span><span style="font-size: 20px; color: #23418b"> {{ answer.expression }}</span>
+                      {% if answer.comment != None %}<a class="btn btn-outline-dark py-0 px-1 m-2" data-toggle="collapse" href="#{{ answer.pk }}" role="button" aria-expanded="false" aria-controls="{{ answer.pk }}">
+    !
+  </a>
+                              {% endif %}
+                              {% endfor %}
+                              {% endif %}
+                              </div>
+
+              -->
+</main>
+{% endblock %}

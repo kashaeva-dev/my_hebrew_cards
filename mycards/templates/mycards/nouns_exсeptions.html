@@ -1,0 +1,128 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+  <main class="container g-0">
+    <div class="row">
+      <div class="col-6 pr-2 mr-0" style="background-color: white">
+        <table class="table mt-1 mb-1" >
+          <tbody style="font-size: 18px;">
+          <p class="pt-2 m-0 text-center" style="font-size: 24px; color: #104080">Мужской род</p>
+      {% for noun in nouns_info %}
+          {% if noun.gender == 'мужской' %}
+            <tr>
+              <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+              <td class="pb-0 pt-3 px-3 mb-0 mt-1 mx-1 text-left">{{ noun.translation }}</td>
+              <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right">
+                <table class="table table-borderless m-0 p-0" >
+                  <tbody style="font-size: 24px;">
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="color: #104080">
+                      {% if noun.2form_name|getWordsNumber == 2 %}
+                      <span style="color: red">{{ noun.2form_name|getWordFirst }}</span> {{ noun.2form_name|getWordSecond }}
+                      {% else %}
+                      {% with positions=noun.2form_name|letter_positions %}
+                        {% with number=noun.exception %}
+                          {% with sliceEnd=positions|getPlNounEnd:number %}
+                            {% with sliceBegin=positions|getPlNounBegin:number %}
+                            {{ noun.2form_name|slice:sliceBegin }}<span style="color: red">{{ noun.2form_name|slice:sliceEnd }}</span>
+                            {% endwith %}
+                          {% endwith %}
+                        {% endwith %}
+                      {% endwith %}
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="font-size: 16px; color: #808080">[{{ noun.2form_pronunciation }}]</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right">
+                <table class="table table-borderless m-0 p-0" >
+                  <tbody style="font-size: 24px;">
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="color: #104080">{{ noun.name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="font-size: 18px; color: #A0A0A0">[{{ noun.pronunciation }}]</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td class="pb-0 pt-3 px-1 mb-0 mt-1 mx-1 text-center" style="font-size: 26px; color: #104080"><i class="fa fa-male" aria-hidden="true"></i></td>
+              <td class="pb-0 pt-1 pr-3 mb-0 mt-1 mx-1 text-center"><img src="{% static 'img/'%}{{ noun.picture }}" width="90" height="60" class="d-inline-block align-top mr-1 rounded" alt=""></td>
+            </tr>
+          {% endif %}
+          {% endfor %}
+      </tbody>
+    </table>
+        </div>
+      <div class="col-6 p-0 m-0">
+        <table class="table mt-1 mb-1" >
+          <tbody style="font-size: 18px;">
+          <p class="pt-2 m-0 text-center" style="font-size: 24px; color: #990066">Женский род</p>
+      {% for noun in nouns_info %}
+          {% if noun.gender == 'женский' %}
+          <tr>
+              <th scope="row" class="p-0 m-0" style="border-top: 0"></th>
+              <td class="pb-0 pt-3 px-1 mb-0 mt-1 mx-1 text-left">{{ noun.translation }}</td>
+              <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right">
+                <table class="table table-borderless m-0 p-0" >
+                  <tbody style="font-size: 24px;">
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="color: #990066">
+                      {% if noun.2form_name|getWordsNumber == 2 %}
+                      <span style="color: red">{{ noun.2form_name|getWordFirst }}</span> {{ noun.2form_name|getWordSecond }}
+                      {% else %}
+                      {% with positions=noun.2form_name|letter_positions %}
+                        {% with number=noun.exception %}
+                          {% with sliceEnd=positions|getPlNounEnd:number %}
+                            {% with sliceBegin=positions|getPlNounBegin:number %}
+                            {{ noun.2form_name|slice:sliceBegin }}<span style="color: red">{{ noun.2form_name|slice:sliceEnd }}</span>
+                            {% endwith %}
+                          {% endwith %}
+                        {% endwith %}
+                      {% endwith %}
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="font-size: 16px; color: #808080">[{{ noun.2form_pronunciation }}]</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right">
+                <table class="table table-borderless m-0 p-0" >
+                  <tbody style="font-size: 24px;">
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="color: #990066">{{ noun.name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="p-0 m-0"></th>
+                    <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-right" style="font-size: 18px; color: #A0A0A0">[{{ noun.pronunciation }}]</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </td>
+                        <td class="pb-0 pt-3 px-1 mb-0 mt-1 mx-1 text-center" style="font-size: 26px; color: #990066"><i class="fa fa-female" aria-hidden="true"></i></td>
+                        <td class="pb-0 pt-1 px-1 mb-0 mt-1 mx-1 text-center"><img src="{% static 'img/'%}{{ noun.picture }}" width="90" height="60" class="d-inline-block align-top mr-1 rounded" alt=""></td>
+            </tr>
+      {% endif %}
+          {% endfor %}
+      </tbody>
+    </table>
+        </div>
+      </div>
+
+  </main>
+{% endblock %}

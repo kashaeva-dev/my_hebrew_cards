@@ -1,0 +1,253 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+
+
+  <div class="row p-0 m-0 text-right">
+    <div class="col-1"></div>
+    <div class="col-3">
+          <p style="color: #990066; font-size: 32px">ТЫСЯЧИ</p>
+      {% for number in numbers_info %}
+      {% if number.type == 'тысячи' %}
+      <div class="row text-right">
+        <div class="col-8 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row m-0 p-0"></th>
+                <td class="m-0 p-0 text-right" style="color: #990066; font-size: 24px">{{ number.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number.pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <div class="col-4">
+            <p class="px-0 text-right" style="font-size: 26px; color: #23418b">
+                {% if number.expressions|length > 0 %}
+                <a class="btn btn-outline-light mt-2 py-0 px-1 ml-3 text-right" style="color: #23418b" data-toggle="collapse" href="#{{ number.id }}_t" role="button" aria-expanded="false" aria-controls="{{ number.id }}_t"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                {% endif %}
+                <b>{{ number.translation}}</b></p>
+        </div>
+      </div>
+        <div class="collapse" id="{{ number.id }}_t">
+                        {% if number.expressions|length > 0 %}
+                           <ul class="list-group p-0 m-0 text-right">
+                               {% for expression in number.expressions %}
+                              <li class="list-group-item pb-1">
+                                  <span style="font-size: 18px; color: #23418b"><b>{{ expression.translation }}</b></span><br>
+                                  <span style="font-size: 14px; color: #707070">[{{ expression.pronunciation }}]</span><br><span style="font-size: 18px; color: #990066"> {{ expression.name }}</span>
+
+                              </li>
+                               {% endfor %}
+                               {% endif %}
+                           </ul>
+            </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="col-2">
+          <p style="color: #990066; font-size: 32px">СОТНИ</p>
+      {% for number in numbers_info %}
+      {% if number.type == 'сотни' %}
+      <div class="row text-right">
+        <div class="col-7 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row m-0 p-0"></th>
+                <td class="m-0 p-0 text-right" style="color: #990066; font-size: 24px">{{ number.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number.pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="col-5">
+            <p class="px-0 text-right" style="font-size: 26px; color: #23418b">
+                {% if number.expressions|length > 0 %}
+                <a class="btn btn-outline-light mt-2 py-0 px-1 ml-3 text-right" style="color: #23418b" data-toggle="collapse" href="#{{ number.id }}" role="button" aria-expanded="false" aria-controls="{{ number.id }}"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                {% endif %}
+                <b>{{ number.translation}}</b></p>
+        </div>
+      </div>
+        <div class="collapse" id="{{ number.id }}">
+                        {% if number.expressions|length > 0 %}
+                           <ul class="list-group p-0 m-0 text-right">
+                               {% for expression in number.expressions %}
+                              <li class="list-group-item pb-1">
+                                  <span style="font-size: 18px; color: #23418b"><b>{{ expression.translation }}</b></span><br>
+                                  <span style="font-size: 14px; color: #707070">[{{ expression.pronunciation }}]</span><span style="font-size: 18px; color: #990066"> {{ expression.name }}</span>
+
+                              </li>
+                               {% endfor %}
+                               {% endif %}
+                           </ul>
+            </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="col-2">
+      <p style="color: #990066; font-size: 32px">ДЕСЯТКИ</p>
+      {% for number in numbers_info %}
+      {% if number.type == 'десятки' %}
+      <div class="row text-right">
+        <div class="col-4 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row m-0 p-0"></th>
+                <td class="m-0 p-0 text-right" style="color: #990066; font-size: 24px"></td>
+            </tr>
+            <tr>
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <div class="col-5 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row m-0 p-0"></th>
+                <td class="m-0 p-0 text-right" style="color: #990066; font-size: 24px">{{ number.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number.pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <div class="col-3"><p class="px-2 text-right" style="font-size: 26px; color: #23418b"><b>{{ number.translation}}</b></p></div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="col-3 p-0 m-0 text-center">
+      <p style="color: #990066; font-size: 32px">ЕДИНИЦЫ</p>
+      {% for number in numbers_info %}
+      {% if number.type == 'единицы' or number.translation == '10'  %}
+      <div class="row text-right">
+        <div class="col-4 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row"></th>
+                <td class="m-0 p-0 text-right" style="color: #23418b; font-size: 24px">{{ number.n2_name }}</td>
+            </tr>
+            <tr class="m-0 p-0" style="border-top: 0">
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number.n2_pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="col-4 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row m-0 p-0"></th>
+                <td class="m-0 p-0 text-right" style="color: #990066; font-size: 24px">{{ number.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number.pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <div class="col-3"><p class="px-2 text-right" style="font-size: 26px; color: #23418b"><b>{{ number.translation}}</b></p></div>
+      </div>
+        {% endif %}
+        {% endfor %}
+      {% for number in numbers_info %}
+      {% if number.translation == '11' or number.translation == '21' %}
+      <div class="row text-right">
+        <div class="col-4 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row"></th>
+                <td class="m-0 p-0 text-right" style="color: #23418b; font-size: 20px">{{ number.n2_name }}</td>
+            </tr>
+            <tr class="m-0 p-0" style="border-top: 0">
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number.n2_pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="col-4 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row m-0 p-0"></th>
+                <td class="m-0 p-0 text-right" style="color: #990066; font-size: 20px">{{ number.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number.pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <div class="col-3"><p class="px-0 text-right" style="font-size: 26px; color: #23418b"><a class="btn btn-outline-light mt-2 py-0 px-1 ml-3 text-right" style="color: #23418b" data-toggle="collapse" href="#{{ number.type }}" role="button" aria-expanded="false" aria-controls="{{ number.type }}"><i class="fa fa-caret-down" aria-hidden="true"></i></a><b>{{ number.translation}}</b></p></div>
+      </div>
+            <div class="collapse" id="{{ number.type }}">
+        {% for number2 in numbers_info %}
+      {% if number2.type == number.type and number2.name != number.name %}
+      <div class="row text-right">
+        <div class="col-4 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row"></th>
+                <td class="m-0 p-0 text-right" style="color: #23418b; font-size: 20px">{{ number2.n2_name }}</td>
+            </tr>
+            <tr class="m-0 p-0" style="border-top: 0">
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number2.n2_pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="col-4 text-right m-0 p-0">
+          <table class="table m-0 p-0">
+          <tbody>
+            <tr>
+                <th scope="row m-0 p-0"></th>
+                <td class="m-0 p-0 text-right" style="color: #990066; font-size: 20px">{{ number2.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row m-0 p-0" style="border-top: 0"></th>
+                <td class="m-0 p-0 text-right" style="border-top: 0; color: #707070; font-size: 16px">[{{ number2.pronunciation }}]</td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <div class="col-3"><p class="px-2 text-right" style="font-size: 22px; color: #23418b"><b>{{ number2.translation}}</b></p></div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-1"></div>
+  </div>
+
+
+{% endblock %}

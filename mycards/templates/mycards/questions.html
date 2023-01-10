@@ -1,0 +1,83 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+<main class="container g-0">
+    <p class="pt-2 m-0 text-center" style="font-size: 24px; color: #CD5C5C">Вопросительные слова</p>
+    {% for word in questions_info %}
+    <div class="row">
+        <div class="col-8">
+  <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              {% if word.other_forms|length > 0 or word.expressions|length > 0 %}
+              <div class="pr-2 mr-0 text-right">
+                <div class="card p-0 m-0">
+                  <ul class="list-group list-group-flush p-0 m-0">
+                    {% for other in word.other_forms %}
+                    <li class="list-group-item">{{ other.translation }} <span style="color: #707070">[{{ other.pronunciation }}]</span><span style="font-size: 22px; color: #CD5C5C"> {{ other.name }}</span>
+                    </li>
+                    {% endfor %}
+                      {% for expression in word.expressions %}
+                    <li class="list-group-item">
+                        {% if expression.answers|length > 0 %}
+                        <a class="btn btn-outline-dark py-0 px-1 m-2" data-toggle="collapse" href="#{{ expression.name }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}">
+    +
+  </a>{% endif %}{{ expression.translation }} <span style="color: #707070">[{{ expression.pronunciation }}]</span> <span style="font-size: 22px; color: #CD5C5C">{{ expression.name }}</span>
+                    <div class="collapse" id="{{ expression.name }}">
+                  {% if expression.answers|length > 0 %}
+                        <div class="card card-body p-0 m-0">
+                   <ul class="list-group list-group-flush p-0 m-0">
+                       {% for answer in expression.answers %}
+                      <li class="list-group-item">
+                          <div class="row" style="font-size: 16px">
+                              <div class="col-4 text-right">{{ answer.translation }}</div>
+                              <div class="col-3" style="color: #707070">[{{ answer.pronunciation }}]</div>
+                              <div class="col-3" style="font-size: 20px; color: #23418b">{{ answer.expression }}</div>
+                              <div class="col-1">
+    <!--                      {{ answer.translation }} <span style="color: #707070">[{{ answer.pronunciation }}]</span><span style="font-size: 20px; color: #23418b"> {{ answer.expression }}</span> -->
+                      {% if answer.comment != None %}<a class="btn btn-outline-dark py-0 px-1 m-2" data-toggle="collapse" href="#{{ answer.pk }}" role="button" aria-expanded="false" aria-controls="{{ answer.pk }}">
+    !
+  </a>
+                              </div>
+
+                          </div>
+                       <div class="collapse p-0 m-0" id="{{ answer.pk }}">
+                          <div class="row p-0 m-0">
+                                 <div class="col-10">
+                                  <p class="p-0 m-0 text-left" style="font-size: 16px">{{answer.comment}}</p>
+                                 </div>
+                          </div>
+                         </div>
+                      {% endif %}
+
+                      </li>
+
+                        {% endfor %}
+
+                    </ul>
+                  </div>
+                </div>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </td>
+              {% else %}
+              <td class="pr-2 mr-0 text-right"></td>
+              {% endif %}
+          </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="col-4">
+            <p>{{ word.translation|upper }} <span style="color: #707070">[{{ word.pronunciation }}]</span> <span style="font-size: 22px; color: #CD5C5C"><b>{{ word.name }}</b></span></p>
+        </div>
+    </div>
+
+          {% endfor %}
+
+
+</main>
+{% endblock %}

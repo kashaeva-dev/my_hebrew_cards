@@ -1,0 +1,152 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+
+
+<div class="row">
+    <div class="col-2" style="color: #23418b">
+        <ul class="nav flex-column" style="border-right: 2px solid #23418b">
+            {% for class in classes %}
+            <div class="row align-items-center p-0 m-0">
+                <div class="col-1 m-0 p-0 text-right">
+                    {% if class.icon != None %}<i class="fa {{ class.icon }} text-right pl-2" aria-hidden="true" style="color: #23418b"></i> {% endif %}
+                </div>
+                <div class="col-11 m-0 p-0">
+                    <li class="nav-item dropdown p-0 m-0">
+                    <a class="nav-link dropdown-toggle pl-2 pb-2 mb-1 ml-1" href="{% url 'nouns_filter' class.cats_ids_form %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #23418b">{{ class.name }}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'nouns_filter' class.cats_ids_form %}">ВСЕ</a>
+                            <div class="dropdown-divider"></div>
+                            {% for cat in class.cats_info %}
+                            <a class="dropdown-item" href="{% url 'nouns_filter' cat.id %}">{% if cat.icon != None %}<i class="fa {{ cat.icon }} text-right pl-2" aria-hidden="true" style="color: #23418b"></i> {% endif %}{{ cat.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+    </div> <!-- Настройка бокового меню -->
+    <div class="col-10">
+        <main class="container">
+            <p class="p1-2 mb-2 text-center" style="font-size: 24px; color: #990066">СУЩЕСТВИТЕЛЬНЫЕ</p>
+            {% for word in nouns_info %}
+            <div class="row p-0 m-0" style="border-top: 1px dashed #A0A0A0">
+                <div class="col-1">
+
+                </div>
+                <div class="col-3"> <!-- word.translation -->
+                    <table class="table table-borderless m-0 p-0">
+                        <tbody>
+                            <tr>
+                                <th class="m-0 p-0" scope="row"></th>
+                                    <td class="pt-2 pr-2 my-0 mx-0" style="font-size: 18px">
+                                        {{ word.translation|upper }}
+                                        {% if word.expressions|length > 0 %}
+                                        <a class="btn btn-outline-dark py-0 px-1 m-1" data-toggle="collapse" href="#{{ word.name }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}">В</a>
+                                        {% endif %}
+                                    </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- word.translation -->
+                <div class="col-3 text-right"> <!-- word.pronunciation -->
+                    <table class="table table-borderless text-right m-0 p-0">
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                    <td class="pt-2 pr-2 mx-0" style="font-size: 18px; color: #707070">[{{ word.pronunciation }}]</td>
+                            </tr>
+                            {% if word.n2_name != None %}
+                            <tr>
+                                <th scope="row"></th>
+                                    <td class="pt-1 my-0 pr-2 mx-0" style="font-size: 18px; color: #707070">[{{ word.n2_pronunciation }}]</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div> <!-- word.pronunciation -->
+                <div class="col-2 text-right"> <!-- word.name -->
+                    <table class="table table-borderless text-right p-0 m-0">
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                {% if word.gender == "мужской" %}
+                                <td class="pt-2 pr-2 mx-0" style="font-size: 20px; color: #104080">{{ word.name }}</td>
+                                {% elif word.gender == "женский" %}
+                                <td class="pt-2 pr-2 mx-0" style="font-size: 20px; color: #990066">{{ word.name }}</td>
+                                {% endif %}
+                            </tr>
+                            {% if word.n2_name != None %}
+                            {% if word.n2_exception != 0 and word.n2_exception != 100 %}
+                            <tr>
+                                <th class="m-0 p-0" scope="row"></th>
+                                    <td class="pb-0 pt-0 pr-2 mb-0 mt-0 mx-0 text-right" style="font-size: 20px">
+                                        {% if word.n2_name|getWordsNumber == 2 %}
+                                        <span style="color: red">{{ word.n2_name|getWordFirst }}</span> {{ word.n2_name|getWordSecond }}
+                                        {% else %}
+                                        {% with positions=word.n2_name|letter_positions %}
+                                        {% with number=word.n2_exception %}
+                                        {% with sliceEnd=positions|getPlNounEnd:number %}
+                                        {% with sliceBegin=positions|getPlNounBegin:number %}
+                                        {{ word.n2_name|slice:sliceBegin }}<span style="color: red">{{ word.n2_name|slice:sliceEnd }}</span>
+                                        {% endwith %}
+                                        {% endwith %}
+                                        {% endwith %}
+                                        {% endwith %}
+                                        {% endif %}
+                                    </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <th scope="row"></th>
+                                <td class="pt-0 my-0 pr-2 mx-0" style="font-size: 20px">{{ word.n2_name }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div> <!-- word.name -->
+                <div class="col-1 text-right">    <!-- значок рода (мужской/женский) -->
+                    <table class="table table-borderless text-right p-0 m-0">
+                        <tbody>
+                            <tr>
+                                <th class="m-0 p-0" scope="row"></th>
+                                    {% if word.gender == "мужской" %}
+                                    <td class="pb-0 pt-3 px-1 mb-0 mt-1 mx-1 text-center" style="font-size: 26px; color: #104080"><i class="fa fa-male" aria-hidden="true"></i></td>
+                                    {% elif word.gender == "женский" %}
+                                    <td class="pb-0 pt-3 px-1 mb-0 mt-1 mx-1 text-center" style="font-size: 26px; color: #990066"><i class="fa fa-female" aria-hidden="true"></i></td>
+                                    {% endif %}
+                            </tr>
+                            {% if word.n2_name != None %}
+                            {% if word.n2_exception != 0 and word.n2_exception != 100 %}
+                            <tr>
+                                <th class="m-0 p-0" scope="row"></th>
+                                    <td class="pb-0 pt-3 px-1 mb-0 mt-1 mx-1 text-center" style="font-size: 16px; color: #FF6060"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></td>
+                            </tr>
+                            {% endif %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div> <!-- значок рода (мужской/женский) -->
+                <div class="col-1"><img src="{% static 'img/'%}{{ word.picture }}" width="120" height="80" class="d-inline-block align-top mr-1 rounded" alt=""></div>
+            </div>
+            <div class="row">
+                <div class="collapse" id="{{ word.name }}">
+                        {% if word.expressions|length > 0 %}
+                           <ul class="list-group list-group-flush p-0 m-0 text-right">
+                               {% for expression in word.expressions %}
+                              <li class="list-group-item pb-1"><span style="font-size: 20px; color: #FF6600">{{ expression.name }}</span><br>{{ expression.translation }} <span style="color: #707070">[{{ expression.pronunciation }}]</span>
+                              </li>
+                               {% endfor %}
+                               {% endif %}
+                           </ul>
+                    </div>
+            </div>
+            {% endfor %}
+        </main>
+    </div>
+</div>
+
+{% endblock %}

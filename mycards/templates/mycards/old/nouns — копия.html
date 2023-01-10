@@ -1,0 +1,90 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+
+
+
+<div class="row">
+    <div class="col-2" style="color: #23418b">
+        <ul class="nav flex-column" style="border-right: 2px solid #23418b">
+            {% for class in classes %}
+            <div class="row align-items-center p-0 m-0">
+                <div class="col-1 m-0 p-0 text-right">
+                    {% if class.icon != None %}<i class="fa {{ class.icon }} text-right" aria-hidden="true" style="color: #23418b"></i> {% endif %}
+                </div>
+                <div class="col-11 m-0 p-0">
+            <li class="nav-item dropdown p-0 m-0">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #23418b">{{ class.name }}</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <!--              <a class="dropdown-item" href="{% url 'nouns_filter' cat.subcats_ids_form %}">ВСЕ</a> -->
+                    {% for cat in classes.categories %}
+                    <a class="dropdown-item" href="{% url 'nouns_filter' cat.id %}">{{ cat.name }}</a>
+                    {% endfor %}
+                </div>
+            </li>
+                </div>
+            </div>
+ <!--
+  <div class="row align-items-center">
+                        <div class="col-1 m-0 p-0 text-right">
+                    {% if cat.icon != None %}<i class="fa {{ cat.icon }}" aria-hidden="true"></i> {% endif %}
+                        </div>
+                        <div class="col-11 m-0 px-2">
+                          {{ cat.name }}
+                        </div>
+                    </div>
+
+
+
+
+  <li class="nav-item">
+                <a class="nav-link" href="{% url 'nouns_filter' cat.subcats_ids_form %}">
+                    <div class="row align-items-center">
+                        <div class="col-1 m-0 p-0 text-right">
+                    {% if topic.icon != None %}<i class="fa {{ topic.icon }}" aria-hidden="true"></i> {% endif %}
+                        </div>
+                        <div class="col-11 m-0 px-2">
+                          {{ topic.name|title }}
+                        </div>
+                    </div>
+
+                </a>
+            </li>
+             <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">Disabled</a>
+  </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Исключения</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'nouns_exceptions' %}">Существительные</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+    </li> -->
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-9">
+        <main class="container">
+<!--    <form action="" method="get">
+        {{ form1.as_p }}
+    </form> -->
+    <p class="pt-2 m-0 text-center" style="font-size: 24px; color: #FF6600">СУЩЕСТВИТЕЛЬНЫЕ</p>
+    {% for word in nouns_info %}
+    <div class="row">
+        <p class="pt-2 m-0 text-center">{{ word.translation }} {{ word.name }} {{ word.id }}</p>
+    </div>
+    {% endfor %}
+</main>
+    </div>
+</div>
+
+{% endblock %}
