@@ -14,7 +14,12 @@ def index(request):
 
 def cards_main(request):
     binyan = Binyan.objects.all()
-    return render(request, "mycards/cards.html", {'binyan': binyan})
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "images"),
+    ]
+    return render(request, "mycards/cards.html", {'binyan': binyan, 'base_dir': BASE_DIR})
 
 def cards_verbs(request):
     verbs = Word.objects.filter(type_id=6, printed=0)
