@@ -5,6 +5,7 @@ from .forms import NounsFilterForm
 from .filters_data import topics
 from pathlib import Path
 import os.path
+from django.conf import settings
 
 
 # Create your views here.
@@ -14,11 +15,6 @@ def index(request):
 
 def cards_main(request):
     binyan = Binyan.objects.all()
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "images"),
-    ]
     return render(request, "mycards/cards.html", {'binyan': binyan, 'base_dir': BASE_DIR})
 
 def cards_verbs(request):
@@ -143,7 +139,7 @@ def adjectives(request):
         expressions_info = []
         other_forms = []
         antonyms = []
-        if Path(os.path.join("C:\Django\Django_hebrew_new_cards\cards_project\mycards\static\img", adjective.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, adjective.picture)).exists():
             adjective_info['picture'] = adjective.picture
         else:
             adjective_info['picture'] = 'нет фото.jpg'
@@ -238,7 +234,7 @@ def nouns_filter_old(request, id):
         expressions_info = []
         other_forms = []
         antonyms = []
-        if Path(os.path.join("C:\Django\Django_hebrew_new_cards\cards_project\mycards\static\img", noun.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
             noun_info['picture'] = 'нет фото.jpg'
@@ -293,7 +289,7 @@ def nouns_all_old(request):
         other_forms = []
         antonyms = []
         noun_info['id'] = noun.pk
-        if Path(os.path.join("C:\Django\Django_hebrew_new_cards\cards_project\mycards\static\img", noun.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
             noun_info['picture'] = 'нет фото.jpg'
@@ -375,7 +371,7 @@ def nouns_all(request):
         other_forms = []
         antonyms = []
         noun_info['id'] = noun.pk
-        if Path(os.path.join("C:\Django\Django_hebrew_new_cards\cards_project\mycards\static\img", noun.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
             noun_info['picture'] = 'нет фото.jpg'
@@ -469,7 +465,7 @@ def nouns_filter(request, cats_ids):
         expressions_info = []
         other_forms = []
         antonyms = []
-        if Path(os.path.join("C:\Django\Django_hebrew_new_cards\cards_project\mycards\static\img", noun.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
             noun_info['picture'] = 'нет фото.jpg'
