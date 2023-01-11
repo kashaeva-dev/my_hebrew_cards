@@ -15,7 +15,7 @@ def index(request):
 
 def cards_main(request):
     binyan = Binyan.objects.all()
-    return render(request, "mycards/cards.html", {'binyan': binyan, 'base_dir': BASE_DIR})
+    return render(request, "mycards/cards.html", {'binyan': binyan})
 
 def cards_verbs(request):
     verbs = Word.objects.filter(type_id=6, printed=0)
@@ -139,7 +139,7 @@ def adjectives(request):
         expressions_info = []
         other_forms = []
         antonyms = []
-        if Path(os.path.join(settings.BASE_DIR, adjective.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', adjective.picture)).exists():
             adjective_info['picture'] = adjective.picture
         else:
             adjective_info['picture'] = 'нет фото.jpg'
@@ -371,7 +371,7 @@ def nouns_all(request):
         other_forms = []
         antonyms = []
         noun_info['id'] = noun.pk
-        if Path(os.path.join(settings.BASE_DIR, noun.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
             noun_info['picture'] = 'нет фото.jpg'
@@ -465,7 +465,7 @@ def nouns_filter(request, cats_ids):
         expressions_info = []
         other_forms = []
         antonyms = []
-        if Path(os.path.join(settings.BASE_DIR, noun.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
             noun_info['picture'] = 'нет фото.jpg'
@@ -649,7 +649,7 @@ def numbers(request):
         expressions_info = []
         other_forms = []
         number_info['id'] = number.pk
-        if Path(os.path.join("C:\Django\Django_hebrew_new_cards\cards_project\static\img", number.picture)).exists():
+        if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', number.picture)).exists():
             number_info['picture'] = number.picture
         else:
             number_info['picture'] = 'нет фото.jpg'
