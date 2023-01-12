@@ -13,4 +13,5 @@ urlpatterns = [
     path('verbs/', views.verbs_all, name='verbs'),
     path('verbs/<str:cats_ids>/', views.verbs_filter, name='verbs_filter'),
     path('numbers/', views.numbers, name='numbers'),
+    path('pronouns/', views.pronouns, name='pronouns'),
 ]

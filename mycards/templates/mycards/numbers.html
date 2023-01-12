@@ -7,7 +7,7 @@
   <div class="row p-0 m-0 text-right">
     <div class="col-1"></div>
     <div class="col-3">
-          <p style="color: #990066; font-size: 32px">ТЫСЯЧИ</p>
+          <p style="color: #990066; font-size: 32px">ТЫСЯЧИ</p><br><br>
       {% for number in numbers_info %}
       {% if number.type == 'тысячи' %}
       <div class="row text-right">
@@ -51,7 +51,7 @@
       {% endfor %}
     </div>
     <div class="col-2">
-          <p style="color: #990066; font-size: 32px">СОТНИ</p>
+          <p style="color: #990066; font-size: 32px">СОТНИ</p><br><br>
       {% for number in numbers_info %}
       {% if number.type == 'сотни' %}
       <div class="row text-right">
@@ -94,7 +94,8 @@
       {% endfor %}
     </div>
     <div class="col-2">
-      <p style="color: #990066; font-size: 32px">ДЕСЯТКИ</p>
+      <p style="color: #990066; font-size: 32px">ДЕСЯТКИ</p><br><br>
+
       {% for number in numbers_info %}
       {% if number.type == 'десятки' %}
       <div class="row text-right">
@@ -135,6 +136,14 @@
     </div>
     <div class="col-3 p-0 m-0 text-center">
       <p style="color: #990066; font-size: 32px">ЕДИНИЦЫ</p>
+        <div class="row">
+            <div class="col-4">
+                <p class="text-right" style="font-size: 32px; color: #104080"><i class="fa fa-male fa-lg" aria-hidden="true"></i></p>
+            </div>
+            <div class="col-4">
+                <p class="text-right" style="font-size: 32px; color: #990066"><i class="fa fa-female fa-lg" aria-hidden="true"></i></p>
+            </div>
+        </div>
       {% for number in numbers_info %}
       {% if number.type == 'единицы' or number.translation == '10'  %}
       <div class="row text-right">

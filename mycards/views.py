@@ -415,8 +415,7 @@ def nouns_all(request):
         noun_info['expressions'] = expressions_info
         nouns_info.append(noun_info)
 
-    return render(request, "mycards/nouns.html", {'nouns_info': nouns_info,
-                                                  'form1': form1,
+    return render(request, "mycards/nouns_all.html", {'form1': form1,
                                                   'classes': classes_info,
                                                   })
 
@@ -509,6 +508,7 @@ def nouns_filter(request, cats_ids):
         noun_info['expressions'] = expressions_info
         nouns_info.append(noun_info)
 
+    nouns_info = sorted(nouns_info, key=lambda word: word['translation'], reverse=False)
     return render(request, "mycards/nouns.html", {'nouns_info': nouns_info,
                                                   'form1': form1,
                                                   'cats_ids': cats_ids,
@@ -711,3 +711,53 @@ def numbers(request):
     numbers_info = sorted(numbers_info, key=lambda word: word['id'], reverse=False)
     return render(request, "mycards/numbers.html", {'numbers_info': numbers_info,
                                                   })
+
+
+def pronouns(request):
+    pronouns = Word.objects.filter(type_id=12)
+    pronouns_info = []
+    form_type = FormType.objects.all()
+    for pronoun in pronouns:
+        pronoun_info = dict()
+        expressions_info = []
+        for pronoun_form in pronoun.forms.all():
+            if pronoun_form.form_type == form_type[0]:
+                pronoun_info['name'] = pronoun_form.vocal_name
+                pronoun_info['translation'] = pronoun_form.translation
+                pronoun_info['pronunciation'] = pronoun_form.pronunciation
+                pronoun_info['gender'] = pronoun_form.gender
+                pronoun_info['number'] = pronoun_form.number
+            elif pronoun_form.form_type == form_type[4]:
+                pronoun_info['name_prs'] = pronoun_form.vocal_name
+                pronoun_info['pronunciation_prs'] = pronoun_form.pronunciation
+            if pronoun_form.form_type == form_type[5]:
+                pronoun_info['name_shl'] = pronoun_form.vocal_name
+                pronoun_info['translation_shl'] = pronoun_form.translation
+                pronoun_info['pronunciation_shl'] = pronoun_form.pronunciation
+                pronoun_info['gender_shl'] = pronoun_form.gender
+                pronoun_info['number_shl'] = pronoun_form.number
+            elif pronoun_form.form_type == form_type[6]:
+                pronoun_info['name_l'] = pronoun_form.vocal_name
+                pronoun_info['translation_l'] = pronoun_form.translation
+                pronoun_info['pronunciation_l'] = pronoun_form.pronunciation
+                pronoun_info['gender_l'] = pronoun_form.gender
+                pronoun_info['number_l'] = pronoun_form.number
+        for expression in pronoun.expressions.all():
+            answers_info = []
+            expression_info = dict()
+            expression_info['name'] = expression.expression
+            expression_info['translation'] = expression.translation
+            expression_info['pronunciation'] = expression.pronunciation
+            for answer in expression.answers.all():
+                answer_info = dict()
+                answer_info['name'] = answer.expression
+                answer_info['translation'] = answer.translation
+                answer_info['pronunciation'] = answer.pronunciation
+                answers_info.append(answer)
+            expression_info['answers'] = answers_info
+            expressions_info.append(expression_info)
+        pronoun_info['expressions'] = expressions_info
+        pronouns_info.append(pronoun_info)
+
+
+    return render(request, "mycards/pronouns.html", {'pronouns_info': pronouns_info})

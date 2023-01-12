@@ -1,0 +1,56 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+
+
+<div class="row">
+    <div class="col-2" style="color: #23418b"> <!-- Настройка бокового меню -->
+        <form action="" method="get">
+            <table class="table">
+            <tbody>
+            <tr>
+                <th scope="row"></th>
+                <td><label class="form-label" for="{{ form1.gender.id_for_label }}">Пол:</label></td>
+                <td>{{ form1.gender }}</td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td><label class="form-label" for="{{ form1.exception.id_for_label }}">Искл.:</label></td>
+                <td>{{ form1.exception }}</td>
+            </tr>
+          </tbody>
+        </table>
+        </form> <!-- Форма фильтрации слов -->
+        <ul class="nav flex-column" style="border-right: 2px solid #23418b">
+            {% for class in classes %}
+            <div class="row align-items-center p-0 m-0">
+                <div class="col-1 m-0 p-0 text-right">
+                    {% if class.icon != None %}<i class="fa {{ class.icon }} text-right pl-2" aria-hidden="true" style="color: #23418b"></i> {% endif %}
+                </div>
+                <div class="col-11 m-0 p-0">
+                    <li class="nav-item dropdown p-0 m-0">
+                    <a class="nav-link dropdown-toggle pl-2 pb-2 mb-1 ml-1" href="{% url 'nouns_filter' class.cats_ids_form %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #23418b">{{ class.name }}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'nouns_filter' class.cats_ids_form %}">ВСЕ</a>
+                            <div class="dropdown-divider"></div>
+                            {% for cat in class.cats_info %}
+                            <a class="dropdown-item m-0 p-0" href="{% url 'nouns_filter' cat.id %}">
+                                <div class="row m-0 p-0">
+                                    <div class="col-1 mx-0 ml-0 mr-2 pt-1 text-center">
+                                        {% if cat.icon != None %}<i class="fa {{ cat.icon }} text-center" aria-hidden="true" style="color: #23418b"></i>{% endif %}
+                                    </div>
+                                    <div class="col-8 m-0 p-0">{{ cat.name }}</div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                </div>
+            </div>
+            {% endfor %}
+        </ul> <!-- Навигация по темам -->
+    </div> <!-- Настройка бокового меню -->
+</div>
+
+{% endblock %}
