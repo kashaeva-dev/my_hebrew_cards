@@ -31,21 +31,18 @@
             {% endfor %}
         </ul>
     </div> <!-- Настройка бокового меню -->
-    <div class="col-10">
-        <div class="container">
-            <p class="p1-2 mb-2 text-center" style="font-size: 24px; color: #23418b">ГЛАГОЛЫ</p>
-            {% for binyan in binyans %}
-            <p><a class="btn btn-outline-light py-0 px-1 ml-3" data-toggle="collapse" href="#{{ binyan.pk }}_b" role="button" aria-expanded="false" aria-controls="{{ binyan.pk }}_b" style="font-size: 24px; color: #23418b">{{ binyan.type }} {{ binyan.name }}</a></p>
-            <div class="collapse" id="{{ binyan.pk }}_b">
+    <div class="col-9">
+            <p class="p-2 mb-2 text-center" style="font-size: 24px; color: #23418b">ГЛАГОЛЫ</p>
                 {% for word in verbs_info %}
-                {% if word.binyan_id == binyan.pk %}
                 <div class="row p-0 m-0" style="border-top: 1px dashed #A0A0A0">
-                    <div class="col-2"> <!-- word.translation -->
+                    <div class="col-1"><img src="{% static 'img/'%}{{ word.picture }}" width="65" height="45" class="d-inline-block align-top mr-1 rounded" alt="" data-toggle="tooltip" title="{{ word.id }}"></div>
+
+                    <div class="col-1 p-0 m-0"> <!-- word.translation -->
                     <table class="table table-borderless m-0 p-0">
                         <tbody>
                             <tr>
                                 <th class="m-0 p-0" scope="row"></th>
-                                    <td class="pt-2 pr-2 my-0 mx-0" style="font-size: 18px">
+                                    <td class="pl-2 pr-0 py-0 my-0 mx-0" style="font-size: 18px">
                                         {{ word.translation|upper }}
                                         {% if word.expressions|length > 0 %}
                                         <a class="btn btn-outline-dark py-0 px-1 ml-3" data-toggle="collapse" href="#{{ word.name }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
@@ -60,41 +57,41 @@
                         <tbody>
                             <tr>
                                 <th scope="row"></th>
-                                    <td class="pt-2 pr-2 mx-0" style="font-size: 18px; color: #707070">[{{ word.pronunciation }}]</td>
+                                    <td class="p-0 mx-0" style="font-size: 18px; color: #707070">[{{ word.pronunciation }}]</td>
                             </tr>
                         </tbody>
                     </table>
-                </div> <!-- word.pronunciation -->
+                    </div> <!-- word.pronunciation -->
                     <div class="col-1 text-right"> <!-- word.name -->
-                    <table class="table table-borderless text-right p-0 m-0">
+                        <table class="table table-borderless text-right p-0 m-0">
                         <tbody>
                             <tr>
                                 <th scope="row"></th>
-                                <td class="pt-2 pr-2 mx-0" style="font-size: 20px; color: #104080">{{ word.vocal_name }}</td>
+                                <td class="p-0 mx-0" style="font-size: 20px; color: #104080">{{ word.vocal_name }}</td>
                             </tr>
                         </tbody>
                     </table>
-                </div> <!-- word.name -->
+                    </div> <!-- word.name -->
                     <div class="col-2 text-right"> <!-- word.pronunciation -->
-                    <table class="table table-borderless text-right m-0 p-0">
+                        <table class="table table-borderless text-right m-0 p-0">
                         <tbody>
                             <tr>
                                 <th scope="row"></th>
-                                    <td class="pt-2 pr-2 mx-0" style="font-size: 18px; color: #707070">[{{ word.f1_pronunciation }}]</td>
+                                    <td class="p-0 mx-0" style="font-size: 18px; color: #707070">[{{ word.f1_pronunciation }}]</td>
                             </tr>
                         </tbody>
                     </table>
-                </div> <!-- word.f1_pronunciation -->
+                    </div> <!-- word.f1_pronunciation -->
                     <div class="col-1 text-right"> <!-- word.name -->
-                    <table class="table table-borderless text-right p-0 m-0">
+                        <table class="table table-borderless text-right p-0 m-0">
                         <tbody>
                             <tr>
                                 <th scope="row"></th>
-                                <td class="pt-2 pr-2 mx-0" style="font-size: 20px; color: #104080">{{ word.f1_name }}</td>
+                                <td class="p-0 mx-0" style="font-size: 20px; color: #104080">{{ word.f1_name }}</td>
                             </tr>
                         </tbody>
-                    </table>
-                </div> <!-- word.f1_name -->
+                        </table>
+                    </div> <!-- word.f1_name -->
                     <div class="col-2 text-right"> <!-- word.m1_pronunciation -->
                         <table class="table table-borderless text-right m-0 p-0">
                         <tbody>
@@ -106,16 +103,25 @@
                     </table>
                     </div> <!-- word.m1_pronunciation -->
                     <div class="col-1 text-right"> <!-- word.m1_name -->
-                    <table class="table table-borderless text-right p-0 m-0">
+                        <table class="table table-borderless text-right p-0 m-0">
                         <tbody>
                             <tr>
                                 <th scope="row"></th>
-                                <td class="pt-2 pr-2 mx-0" style="font-size: 20px; color: #104080">{{ word.m1_name }}</td>
+                                <td class="p-0 mx-0" style="font-size: 20px; color: #104080">{{ word.m1_name }}</td>
                             </tr>
                         </tbody>
                     </table>
-                </div> <!-- word.m1_name -->
-                    <div class="col-1"><img src="{% static 'img/'%}{{ word.picture }}" width="65" height="45" class="d-inline-block align-top mr-1 rounded" alt="" data-toggle="tooltip" title="{{ word.id }}"></div>
+                    </div> <!-- word.m1_name -->
+                    <div class="col-1 p-0 m-0 text-right"> <!-- word.binyan -->
+                        <table class="table table-borderless text-right p-0 m-0">
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                <td class="p-0 mx-0" style="font-size: 18px; color: #707070">{{ word.binyan_output }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div> <!-- word.binyan -->
                 </div>
                 <div class="row">
                 <div class="col-2"></div>
@@ -138,12 +144,9 @@
                 </div>
                 <div class="col-4"></div>
             </div>
-                {% endif %}
-                {% endfor %}
-            </div>
             {% endfor %}
-        </div>
     </div>
+    <div class="col-1"></div>
 </div>
 
 {% endblock %}

@@ -8,6 +8,7 @@ urlpatterns = [
     path('nouns_exceptions/', views.table_nouns_exceptions, name='nouns_exceptions'),
     path('questions/', views.question_words, name='questions'),
     path('adjectives/', views.adjectives, name='adjectives'),
+    path('adjectives/<int:topic>/', views.adjectives_filter, name='adjectives_filter'),
     path('nouns/', views.nouns_all, name='nouns'),
     path('nouns/<str:cats_ids>/', views.nouns_filter, name='nouns_filter'),
     path('verbs/', views.verbs_all, name='verbs'),

@@ -4,6 +4,7 @@ from django.db import models
 class Binyan(models.Model):
     type = models.CharField(max_length=15, verbose_name="Биньян")
     name = models.CharField(max_length=15, verbose_name="Подгруппа", null=True)
+    output = models.CharField(max_length=4, verbose_name="Обозначение", null=True)
 
 
     def __str__(self):

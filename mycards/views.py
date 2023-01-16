@@ -131,7 +131,9 @@ def question_words(request):
 
 
 def adjectives(request):
-    adjectives = Word.objects.filter(type_id=2, is_antonym=0).exclude(topic=2)
+    topics = Topic.objects.exclude(pk=0)
+
+    adjectives = Word.objects.filter(type_id=2, is_antonym=1)
     adjectives_info = []
     form_type = FormType.objects.all()
     for adjective in adjectives:
@@ -143,6 +145,7 @@ def adjectives(request):
             adjective_info['picture'] = adjective.picture
         else:
             adjective_info['picture'] = 'нет фото.jpg'
+        adjective_info['id'] = adjective.pk
         for form in adjective.forms.all():
             if form.form_type == form_type[0]:
                 adjective_info['name'] = form.vocal_name
@@ -189,6 +192,7 @@ def adjectives(request):
             else:
                 antonym_info['picture'] = 'нет фото.jpg'
             aother_forms = []
+            antonym_info['id'] = antonym.pk
             for aform in antonym.forms.all():
                 if aform.form_type == form_type[0]:
                     antonym_info['name'] = aform.vocal_name
@@ -219,7 +223,104 @@ def adjectives(request):
         adjectives_info.append(adjective_info)
 
 
-    return render(request, "mycards/adjectives.html", {'adjectives_info': adjectives_info})
+    return render(request, "mycards/adjectives.html", {'adjectives_info': adjectives_info, 'topics': topics})
+
+
+def adjectives_filter(request, topic):
+    topics = Topic.objects.exclude(pk=0)
+
+    adjectives = Word.objects.filter(type_id=2, is_antonym=0)
+    adjectives = adjectives.filter(topic=topic)
+    adjectives_info = []
+    form_type = FormType.objects.all()
+    for adjective in adjectives:
+        adjective_info = dict()
+        expressions_info = []
+        other_forms = []
+        antonyms = []
+        if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', adjective.picture)).exists():
+            adjective_info['picture'] = adjective.picture
+        else:
+            adjective_info['picture'] = 'нет фото.jpg'
+        adjective_info['id'] = adjective.pk
+        for form in adjective.forms.all():
+            if form.form_type == form_type[0]:
+                adjective_info['name'] = form.vocal_name
+                adjective_info['translation'] = form.translation
+                adjective_info['pronunciation'] = form.pronunciation
+            elif form.gender == 'мужской' and form.number == 'множественное':
+                adjective_info['m2_name'] = form.vocal_name
+                adjective_info['m2_translation'] = form.translation
+                adjective_info['m2_pronunciation'] = form.pronunciation
+            elif form.gender == 'женский' and form.number == 'единственное':
+                adjective_info['f1_name'] = form.vocal_name
+                adjective_info['f1_pronunciation'] = form.pronunciation
+            elif form.gender == 'женский' and form.number == 'множественное':
+                adjective_info['f2_name'] = form.vocal_name
+                adjective_info['f2_pronunciation'] = form.pronunciation
+            else:
+                other_form = dict()
+                other_form['name'] = form.vocal_name
+                other_form['translation'] = form.translation
+                other_form['pronunciation'] = form.pronunciation
+                other_form['gender'] = form.gender
+                other_form['number'] = form.number
+                other_forms.append(other_form)
+        for expression in adjective.expressions.all():
+            answers_info = []
+            expression_info = dict()
+            expression_info['name'] = expression.expression
+            expression_info['translation'] = expression.translation
+            expression_info['pronunciation'] = expression.pronunciation
+            for answer in expression.answers.all():
+                answer_info = dict()
+                answer_info['name'] = answer.expression
+                answer_info['translation'] = answer.translation
+                answer_info['pronunciation'] = answer.pronunciation
+                answers_info.append(answer)
+            expression_info['answers'] = answers_info
+            expressions_info.append(expression_info)
+        antonym = adjective.antonym.first()
+        antonym_info = dict()
+        if antonym != None:
+            if Path(os.path.join("C:\Django\Django_hebrew_new_cards\cards_project\static\mycards\img",
+                                 antonym.picture)).exists():
+                antonym_info['picture'] = antonym.picture
+            else:
+                antonym_info['picture'] = 'нет фото.jpg'
+            aother_forms = []
+            antonym_info['id'] = antonym.pk
+            for aform in antonym.forms.all():
+                if aform.form_type == form_type[0]:
+                    antonym_info['name'] = aform.vocal_name
+                    antonym_info['translation'] = aform.translation
+                    antonym_info['pronunciation'] = aform.pronunciation
+                elif aform.gender == 'мужской' and aform.number == 'множественное':
+                    antonym_info['m2_name'] = aform.vocal_name
+                    antonym_info['m2_translation'] = aform.translation
+                    antonym_info['m2_pronunciation'] = aform.pronunciation
+                elif aform.gender == 'женский' and aform.number == 'единственное':
+                    antonym_info['f1_name'] = aform.vocal_name
+                    antonym_info['f1_pronunciation'] = aform.pronunciation
+                elif aform.gender == 'женский' and aform.number == 'множественное':
+                    antonym_info['f2_name'] = aform.vocal_name
+                    antonym_info['f2_pronunciation'] = aform.pronunciation
+                else:
+                    aother_form = dict()
+                    aother_form['name'] = aform.vocal_name
+                    aother_form['translation'] = aform.translation
+                    aother_form['pronunciation'] = aform.pronunciation
+                    aother_form['gender'] = aform.gender
+                    aother_form['number'] = aform.number
+                    aother_forms.append(aother_form)
+                antonym_info['aother_forms'] = aother_forms
+        adjective_info['antonyms'] = antonym_info
+        adjective_info['other_forms'] = other_forms
+        adjective_info['expressions'] = expressions_info
+        adjectives_info.append(adjective_info)
+
+    adjectives_info = sorted(adjectives_info, key=lambda word: word['translation'], reverse=False)
+    return render(request, "mycards/adjectives.html", {'adjectives_info': adjectives_info, 'topics': topics})
 
 
 def nouns_filter_old(request, id):
@@ -567,7 +668,10 @@ def verbs_all(request):
         verb_info['binyan_id'] = verb.binyan.pk
         verb_info['binyan_name'] = verb.binyan.name
         verb_info['binyan_type'] = verb.binyan.type
+        verb_info['binyan_output'] = verb.binyan.output
         verbs_info.append(verb_info)
+
+    verbs_info = sorted(verbs_info, key=lambda word: word['translation'], reverse=False)
     return render(request, "mycards/verbs.html", {'verbs_info': verbs_info,
                                                   'classes': classes_info,
                                                   'binyans': binyans,

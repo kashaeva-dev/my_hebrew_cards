@@ -2,14 +2,33 @@
 {% load custom_tags %}
 {%  load static %}
 {% block container %}
-<main class="container g-0">
+
+<div class="row">
+    <div class="col-2" style="color: #23418b"> <!-- Настройка бокового меню -->
+        <ul class="nav flex-column" style="border-right: 2px solid #23418b">
+            {% for topic in topics %}
+            <div class="row align-items-center p-0 m-0">
+                <div class="col-1 m-0 p-0 text-right">
+                    {% if topic.icon != None %}<i class="fa {{ topic.icon }} text-right pl-2" aria-hidden="true" style="color: #23418b"></i> {% endif %}
+                </div>
+                <div class="col-11 m-0 p-0">
+                    <li class="nav-item p-0 m-0">
+                    <a class="nav-link pl-2 pb-2 mb-1 ml-1" href="{% url 'adjectives_filter' topic.pk %}" style="color: #23418b">{{ topic.category }}</a>
+                    </li>
+                </div>
+            </div>
+            {% endfor %}
+        </ul> <!-- Навигация по темам -->
+    </div> <!-- Настройка бокового меню -->
+    <div class="col-10">
+       <main class="container g-0">
     <p class="pt-2 m-0 text-center" style="font-size: 24px; color: #FF6600">ПРИЛАГАТЕЛЬНЫЕ</p>
   <table class="table" style="font-size: 16px">
           <tbody>
           {% for word in adjectives_info %}
             <tr>
                 {% if word.antonyms|length > 0 %}
-                <td class="pb-0 pt-1 pr-0 mb-0 mt-1 mx-0 text-center"><img src="{% static 'img/'%}{{ word.antonyms.picture }}" width="120" height="80" class="d-inline-block align-top mr-1 rounded" alt=""></td>
+                <td class="pb-0 pt-1 pr-0 mb-0 mt-1 mx-0 text-center"><img src="{% static 'img/'%}{{ word.antonyms.picture }}" width="120" height="80" class="d-inline-block align-top mr-1 rounded" alt="" data-toggle="tooltip" title="{{ word.id }}"></td>
                 <td class="p-0 mr-3 text-left"><span style="font-size: 20px; color: #FF6600">{{ word.antonyms.translation }}</span>
                   <table class="table table-borderless mt-1 mb-1" >
                     <tbody style="font-size: 18px;">
@@ -63,7 +82,7 @@
                   {% endif %}
                 </td>
 
-                <td class="pb-0 pt-1 pr-0 mb-0 mt-1 mx-0 text-center"><img src="{% static 'img/'%}{{ word.picture }}" width="120" height="80" class="d-inline-block align-top mr-1 rounded" alt=""></td>
+                <td class="pb-0 pt-1 pr-0 mb-0 mt-1 mx-0 text-center"><img src="{% static 'img/'%}{{ word.picture }}" width="120" height="80" class="d-inline-block align-top mr-1 rounded" alt="" data-toggle="tooltip" title="{{ word.id }}"></td>
             </tr>
           {% endfor %}
           </tbody>
@@ -137,4 +156,7 @@
 
               -->
 </main>
+    </div>
+</div>
+
 {% endblock %}
