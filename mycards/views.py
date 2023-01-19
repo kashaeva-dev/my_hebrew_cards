@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
-from .forms import NounsFilterForm
+from .forms import NounsFilterForm, VerbsFilterForm
 from .filters_data import topics
 from pathlib import Path
 import os.path
 from django.conf import settings
+import datetime as dt
 
 
 # Create your views here.
@@ -436,7 +437,10 @@ def nouns_all_old(request):
 
 
 def nouns_all(request):
-    nouns = Word.objects.filter(type_id=1, animacy='inan').exclude(topic=2)
+    today = dt.datetime.now()
+    D1 = dt.timedelta(days=1)
+    yesterday = today - D1
+    nouns = Word.objects.filter(type_id=1)
     form1 = NounsFilterForm(request.GET)
     if form1.is_valid():
         if form1.cleaned_data["gender"]:
@@ -444,6 +448,13 @@ def nouns_all(request):
         if form1.cleaned_data['exception']:
             lst = list(map(int, form1.cleaned_data['exception'].strip('[]').split(', ')))
             nouns = nouns.filter(forms__exception__in=lst).distinct()
+        if form1.cleaned_data["date"]:
+            DD = dt.timedelta(days=int(form1.cleaned_data['date']))
+            earlier = today - DD
+            if int(form1.cleaned_data['date']) == "":
+                nouns = Word.objects.filter(type_id=1)
+            else:
+                nouns = nouns.filter(time_create__gt=earlier)
     nouns_info = []
     form_type = FormType.objects.all()
     classes = Classes.objects.all()
@@ -472,6 +483,7 @@ def nouns_all(request):
         other_forms = []
         antonyms = []
         noun_info['id'] = noun.pk
+        noun_info['animacy'] = noun.animacy
         if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
@@ -516,8 +528,9 @@ def nouns_all(request):
         noun_info['expressions'] = expressions_info
         nouns_info.append(noun_info)
 
-    return render(request, "mycards/nouns_all.html", {'form1': form1,
-                                                  'classes': classes_info,
+    return render(request, "mycards/nouns_all.html", {'nouns_info': nouns_info,
+                                                'form1': form1,
+                                                'classes': classes_info,
                                                   })
 
 
@@ -556,7 +569,11 @@ def nouns_filter(request, cats_ids):
         if form1.cleaned_data['exception']:
             lst = list(map(int, form1.cleaned_data['exception'].strip('[]').split(', ')))
             nouns = nouns.filter(forms__exception__in=lst).distinct()
-
+        if form1.cleaned_data["date"]:
+            today = dt.datetime.now()
+            DD = dt.timedelta(days=int(form1.cleaned_data['date']))
+            earlier = today - DD
+            nouns = nouns.filter(time_create__gt=earlier)
 
     form_type = FormType.objects.all()
     for noun in nouns:
@@ -618,31 +635,24 @@ def nouns_filter(request, cats_ids):
 
 
 def verbs_all(request):
-    # Формируем список классов и категорий
-    classes = Classes.objects.all()
-    classes_info = []
-    for class_ in classes:
-        class_info = dict()
-        class_info['pk'] = class_.pk
-        class_info['name'] = class_.name
-        class_info['icon'] = class_.icon
-        cats = class_.categories.all()
-        cats_ids_form = []  # формирующиеся айди подкатегорий, выбранной категории
-        cats_info = []
-        for cat in cats:
-            cat_info = dict()
-            cat_info['id'] = cat.pk
-            cat_info['name'] = cat.name
-            cat_info['icon'] = cat.icon
-            cats_info.append(cat_info)
-            cats_ids_form.append(cat.pk)
-        class_info['cats_ids_form'] = cats_ids_form
-        class_info['cats_info'] = cats_info
-        classes_info.append(class_info)
     # Формируем список биньянов
     binyans = Binyan.objects.exclude(pk=99)
+
+    verbs_form = VerbsFilterForm(request.GET)
+
     # Формируем словарь с данными по каждому глаголу:
     verbs = Word.objects.filter(type_id=6)
+
+
+    if verbs_form.is_valid():
+        if verbs_form.cleaned_data["binyan"]:
+            verbs = verbs.filter(binyan__pk=verbs_form.cleaned_data['binyan']).distinct()
+        if verbs_form.cleaned_data["date"]:
+            today = dt.datetime.now()
+            DD = dt.timedelta(days=int(verbs_form.cleaned_data['date']))
+            earlier = today - DD
+            verbs = verbs.filter(time_create__gt=earlier)
+
     verbs_info = []
     form_type = FormType.objects.all()[0]
     for verb in verbs:
@@ -673,9 +683,9 @@ def verbs_all(request):
 
     verbs_info = sorted(verbs_info, key=lambda word: word['translation'], reverse=False)
     return render(request, "mycards/verbs.html", {'verbs_info': verbs_info,
-                                                  'classes': classes_info,
                                                   'binyans': binyans,
                                                   'form_type': form_type,
+                                                  'form': verbs_form,
                                                   })
 
 def verbs_filter(request, cats_ids):

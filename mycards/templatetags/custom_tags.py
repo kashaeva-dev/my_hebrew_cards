@@ -108,8 +108,8 @@ def getPlNounBegin(positions, number=2):
 
 
 @register.filter
-def getWordFirst(words):
-    return words.split()[0]
+def getWordFirst(words, sep=" "):
+    return words.split(sep)[0]
 
 
 @register.filter

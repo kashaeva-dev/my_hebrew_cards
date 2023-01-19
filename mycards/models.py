@@ -8,7 +8,7 @@ class Binyan(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Root(models.Model):
@@ -16,7 +16,7 @@ class Root(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Type(models.Model):
@@ -27,7 +27,7 @@ class Type(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Topic(models.Model):
     category = models.CharField(max_length=25, verbose_name='Категория')
@@ -56,16 +56,27 @@ class Classifing(models.Model):
 
 class Word(models.Model):
     type = models.ForeignKey(Type, on_delete=models.PROTECT, verbose_name='Часть речи')
-    animacy = models.CharField(max_length=4, verbose_name='Одушевленность', null=True)
+    animacy = models.BooleanField(default=False, verbose_name='Одушевленность', null=True, blank=True)
     name = models.CharField(max_length=64, verbose_name='Название (для поиска)')
-    root = models.ForeignKey(Root, on_delete=models.PROTECT, related_name='words', verbose_name='Корень', null=True)
-    binyan = models.ForeignKey(Binyan, on_delete=models.PROTECT, verbose_name='Биньян с подгруппой', null=True)
+    root = models.ForeignKey(Root, on_delete=models.PROTECT, related_name='words', verbose_name='Корень', null=True, blank=True)
+    binyan = models.ForeignKey(Binyan, on_delete=models.PROTECT, verbose_name='Биньян с подгруппой', null=True, blank=True)
     picture = models.URLField(default='https://place-hold.it/300x200', verbose_name='Картинка')
     printed = models.BooleanField(default=False)
-    topic = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name='words', verbose_name='Тема', null=True)
+    topic = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name='words', verbose_name='Тема', null=True, blank=True)
     is_antonym = models.BooleanField(default=False, null=True)
-    antonym_word = models.ForeignKey('self', on_delete=models.PROTECT, related_name='antonym', verbose_name='Антоним', null=True)
+    antonym_word = models.ForeignKey('self', on_delete=models.PROTECT, related_name='antonym', verbose_name='Антоним', null=True, blank=True)
     categories = models.ManyToManyField(Category, through='Grouping', related_name='words')
+    time_create = models.DateTimeField(auto_now_add=True)
+    
+
+    #def __str__(self):
+    #    return self.name + ' ' + self.picture.split('.')[0] + ' (' + str(self.pk) + ')'
+
+
+    class Meta:
+        verbose_name = "слово"
+        verbose_name_plural = "слово"
+        ordering = ['time_create', 'name']
 
 
 class Grouping(models.Model):
@@ -74,22 +85,22 @@ class Grouping(models.Model):
 
 
 class WordForm(models.Model):
-    time = models.CharField(max_length=20, null=True)
-    gender = models.CharField(max_length=6, null=True)
-    number = models.CharField(max_length=12, null=True)
+    time = models.CharField(max_length=20, null=True, blank=True)
+    gender = models.CharField(max_length=7, null=True, blank=True)
+    number = models.CharField(max_length=13, null=True, blank=True)
     name = models.CharField(max_length=64, verbose_name='Название (для поиска)')
     vocal_name = models.CharField(max_length=64, verbose_name='Название с огласовками')
     exception = models.IntegerField(default=0)
     pronunciation = models.CharField(max_length=64, verbose_name='Произношение')
     translation = models.CharField(max_length=64, verbose_name='Перевод')
     word = models.ForeignKey(Word, on_delete=models.PROTECT, related_name='forms', verbose_name='Основная форма')
-    example = models.TextField(null=True)
+    example = models.TextField(null=True, blank=True)
     form_type = models.ForeignKey(FormType, on_delete=models.PROTECT, related_name='words', verbose_name='Тип формы', null=True)
-    comment = models.TextField(null=True)
+    comment = models.TextField(null=True, blank=True)
 
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Expression(models.Model):
     expression = models.CharField(max_length=256, verbose_name='Выражение')
