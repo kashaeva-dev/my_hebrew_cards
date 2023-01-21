@@ -17,10 +17,15 @@ binyans = [('', ''),
 
 
 periods = [('',''),
-           (1, 'день'),
-           (7, 'неделя'),
-           (14, 'две недели'),
-           (31, 'месяц'),
+        (1, 'день'),
+        (2, '2 дня'),
+        (3, '3 дня'),
+        (4, '4 дня'),
+        (5, '5 дней'),
+        (6, '6 дней'),
+        (7, 'неделя'),
+        (14, 'две недели'),
+        (31, 'месяц'),
            ]
 
 
@@ -49,8 +54,6 @@ class NounsFilterForm(forms.Form):
                                   )
 
 
-
-
 class VerbsFilterForm(forms.Form):
     binyan = forms.ChoiceField(label='Биньян  ',
                                initial='',
@@ -63,3 +66,15 @@ class VerbsFilterForm(forms.Form):
                                   choices=periods,
                                   widget=forms.Select(attrs={'onchange': 'submit();'})
                                   )
+
+
+class NounsAddForm(forms.Form):
+    text = forms.CharField(label="Слово и произношение", widget=forms.Textarea(attrs={'cols':40, 'rows': 5}))
+    translation = forms.CharField(max_length=255, label="Перевод")
+    animacy = forms.BooleanField(required=False, label="Одушевленный")
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), label="Категория")
+    gender = forms.ChoiceField(choices=[('мужской', 'мужской'), ('женский', 'женский')], initial='мужской', label="Пол")
+    only_plural = forms.BooleanField(required=False, label="Только множественное")
+    exception = forms.ChoiceField(choices=[('2', 'другое окончание'),('-1', 'измн. первое слово'), ('0', 'не искл.')], initial=0, label="Исключение")
+    type = forms.ModelChoiceField(label="Часть речи", queryset=Type.objects.filter(pk=1), initial=1,
+                                  widget=forms.HiddenInput())

@@ -1,22 +1,53 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
-from .forms import NounsFilterForm, VerbsFilterForm
+from .forms import NounsFilterForm, VerbsFilterForm, NounsAddForm
 from .filters_data import topics
 from pathlib import Path
 import os.path
 from django.conf import settings
 import datetime as dt
+from .functions import *
+import pymorphy2
+import random
+from bidi.algorithm import get_display
+import wordcloud
+import numpy as np
+import matplotlib.pyplot as plt
+morph = pymorphy2.MorphAnalyzer()
 
 
 # Create your views here.
-def index(request):
-    return HttpResponse("Здесь будут карточки для изучения иврита")
-
-
 def cards_main(request):
-    binyan = Binyan.objects.all()
-    return render(request, "mycards/cards.html", {'binyan': binyan})
+    today = dt.datetime.now()
+    D1 = dt.timedelta(days=3)
+    date_limit = today - D1
+    new_words = Word.objects.filter(time_create__gt=date_limit)
+    words = [" ".join([word.picture.split('.')[0], get_display(word.name)]) for word in new_words]
+
+
+    # Create an empty dictionary
+    word_freq = {}
+    # Iterate over the list of words
+    for word in words:
+        # Assign a random frequency between 1 and 50
+        freq = random.randint(1, 50)
+        # Add the word and frequency to the dictionary
+        word_freq[word] = freq
+
+    cake_mask = np.array(plt.imread(os.path.join(settings.BASE_DIR, 'mycards/static/img/мысль2.jpeg')))
+
+    cloud = wordcloud.WordCloud(font_path=os.path.join(settings.BASE_DIR, 'mycards/static/img/Arimo-Regular.ttf'), mask=cake_mask,
+                                background_color='#FFFFFF', colormap='Blues', max_words=40, font_step=2, width=2000,
+                                height=900, prefer_horizontal=0.8).generate_from_frequencies(word_freq)
+
+
+
+    cloud.to_file(os.path.join(settings.BASE_DIR, 'mycards/static/img/wordcloud.png'))
+
+    
+    return render(request, "mycards/cards.html", {})
+
 
 def cards_verbs(request):
     verbs = Word.objects.filter(type_id=6, printed=0)
@@ -85,6 +116,7 @@ def table_nouns_exceptions(request):
                 only_1form.append(only_1form_info)
     nouns_info = sorted(nouns_info, key=lambda noun: [noun['gender'], noun['translation']], reverse=False)
     return render(request, "mycards/nouns_exсeptions.html", {'nouns_info': nouns_info, 'only_1form': only_1form})
+
 
 def question_words(request):
     questions = Word.objects.filter(type_id=18)
@@ -380,6 +412,7 @@ def nouns_filter_old(request, id):
 
     return render(request, "mycards/nouns_old.html", {'nouns_info': nouns_info, 'topics': top})
 
+
 def nouns_all_old(request):
     nouns = Word.objects.filter(type_id=1, animacy='inan').exclude(topic=2)
     nouns_info = []
@@ -535,7 +568,7 @@ def nouns_all(request):
 
 
 def nouns_filter(request, cats_ids):
-    nouns = Word.objects.filter(type_id=1, animacy='inan').exclude(topic=2)
+    nouns = Word.objects.filter(type_id=1).exclude(topic=2)
 
     form1 = NounsFilterForm(request.GET)
 
@@ -582,6 +615,7 @@ def nouns_filter(request, cats_ids):
         expressions_info = []
         other_forms = []
         antonyms = []
+        noun_info['animacy'] = noun.animacy
         if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', noun.picture)).exists():
             noun_info['picture'] = noun.picture
         else:
@@ -687,6 +721,7 @@ def verbs_all(request):
                                                   'form_type': form_type,
                                                   'form': verbs_form,
                                                   })
+
 
 def verbs_filter(request, cats_ids):
     # Формируем список классов и категорий
@@ -875,3 +910,69 @@ def pronouns(request):
 
 
     return render(request, "mycards/pronouns.html", {'pronouns_info': pronouns_info})
+
+
+def add_noun(request):
+    form_types = FormType.objects.all()
+    data = ""
+    names = ""
+    word = ""
+    wordforms = ""
+    morph = pymorphy2.MorphAnalyzer()
+    if request.method == 'POST':
+        form = NounsAddForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            names = data['text'].splitlines()
+            word = dict()
+            word['type'] = data['type']
+            word['animacy'] = data['animacy']
+            word['name'] = only_letters(names[0])
+            word['picture'] = ".".join([data['translation'], 'jpg'])
+            try:
+                new_noun = Word.objects.create(**word)
+            except:
+                form.add_error(None, "Ошибка добавления слова")
+            wordforms = []
+            if data['only_plural']:
+                data['number'] = 'множественное'
+            else:
+                data['number'] = 'единственное'
+            i = 0
+            while i < len(names):
+                wordform = dict()
+                wordform['gender'] = data['gender']
+                if i == 0:
+                    wordform['number'] = data['number']
+                    wordform['form_type'] = form_types[0]
+                    wordform['translation'] = data['translation']
+                    if data['only_plural']:
+                        wordform['exception'] = 100
+                    else:
+                        wordform['exception'] = 0
+                elif i == 2:
+                    wordform['number'] = 'множественное'
+                    wordform['form_type'] = form_types[1]
+                    translation = morph.parse(data['translation'])[0]
+                    wordform['translation'] = translation.make_agree_with_number(2).word
+                    wordform['exception'] = data['exception']
+
+                wordform['name'] =  only_letters(names[i])
+                wordform['vocal_name'] = names[i]
+                wordform['pronunciation'] = names[i+1]
+                wordform['word'] = new_noun
+                try:
+                    WordForm.objects.create(**wordform)
+                except:
+                    form.add_error(None, "Ошибка добавления формы слова " + i)
+
+                i += 2
+            cat = {'category': data['category'], 'word': new_noun}
+            try:
+                Grouping.objects.create(**cat)
+                return redirect('add_noun')
+            except:
+                form.add_error(None, "Ошибка добавления слова в категорию")
+    else:
+        form = NounsAddForm()
+    return render(request, 'mycards/add_nouns.html', {'form': form, 'data': data, 'names': names, 'word': word, 'wordforms': wordforms})

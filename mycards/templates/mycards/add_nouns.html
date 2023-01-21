@@ -3,6 +3,24 @@
 {%  load static %}
 {% block container %}
 
+{% load crispy_forms_tags %}
 
 <p class="p1-2 mb-2 text-center" style="font-size: 24px; color: #990066">ДОБАВИТЬ СУЩЕСТВИТЕЛЬНOЕ</p>
+
+
+<main class="container">
+    <div class="row">
+        <div class="col-6">
+            <form class="p-5" action="{% url 'add_noun' %}" method="post">
+                {% csrf_token %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+                {{ form|crispy }}
+            <input type="submit" value="Submit"  class="btn btn-primary">
+            </form>
+        </div>
+        <div class="col-6">
+        </div>
+    </div>
+
+</main>
 {% endblock %}

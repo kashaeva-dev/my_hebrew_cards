@@ -47,7 +47,8 @@ class Category(models.Model):
     name = models.CharField(max_length=64, verbose_name='Название категории')
     icon = models.CharField(max_length=25, verbose_name='Иконка', null=True)
     classes = models.ManyToManyField(Classes, through='Classifing', related_name='categories')
-
+    def __str__(self):
+        return str(self.name)
 
 class Classifing(models.Model):
     classes = models.ForeignKey(Classes, on_delete=models.CASCADE)
@@ -77,6 +78,7 @@ class Word(models.Model):
         verbose_name = "слово"
         verbose_name_plural = "слово"
         ordering = ['time_create', 'name']
+        unique_together = [("name", "picture")]
 
 
 class Grouping(models.Model):
