@@ -38,7 +38,7 @@ def cards_main(request):
     cake_mask = np.array(plt.imread(os.path.join(settings.BASE_DIR, 'mycards/static/img/мысль2.jpeg')))
 
     cloud = wordcloud.WordCloud(font_path=os.path.join(settings.BASE_DIR, 'mycards/static/img/Arimo-Regular.ttf'), mask=cake_mask,
-                                background_color='#FFFFFF', colormap='Blues', max_words=40, font_step=2, width=1800,
+                                background_color='#FFFFFF', colormap='RdYlBu', max_words=40, font_step=2, width=1800,
                                 height=1600, prefer_horizontal=0.8).generate_from_frequencies(word_freq)
 
 
