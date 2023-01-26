@@ -78,3 +78,48 @@ class NounsAddForm(forms.Form):
     exception = forms.ChoiceField(choices=[('2', 'другое окончание'),('-1', 'измн. первое слово'), ('0', 'не искл.')], initial=0, label="Исключение")
     type = forms.ModelChoiceField(label="Часть речи", queryset=Type.objects.filter(pk=1), initial=1,
                                   widget=forms.HiddenInput())
+
+class VerbsAddForm(forms.Form):
+    text = forms.CharField(label="Инфинитив и произношение", widget=forms.Textarea(attrs={'cols':40, 'rows': 5}))
+    word_forms_now = forms.CharField(label="Формы настоящего времени", widget=forms.Textarea(attrs={'cols': 40, 'rows': 5}))
+    translation = forms.CharField(max_length=255, label="Перевод инфинитива")
+    binyan = forms.ModelChoiceField(queryset=Binyan.objects.all(), label="Биньян")
+    root = forms.ModelChoiceField(queryset=Root.objects.all(), label="Корень")
+    type = forms.ModelChoiceField(label="Часть речи", queryset=Type.objects.filter(pk=6), initial=6,
+                                  widget=forms.HiddenInput())
+
+class BinyanAddForm(forms.ModelForm):
+    class Meta:
+        model = Binyan
+        fields = ['type', 'name', 'output']
+
+
+class RootAddForm(forms.ModelForm):
+    class Meta:
+        model = Root
+        fields = ['name']
+
+
+class AdjectivesAddForm(forms.Form):
+    text = forms.CharField(label="Формы слова и их произношение", widget=forms.Textarea(attrs={'cols':40, 'rows': 5}))
+    translation = forms.CharField(max_length=255, label="Перевод слова")
+    type = forms.ModelChoiceField(label="Часть речи", queryset=Type.objects.filter(pk=2), initial=2,
+                                  widget=forms.HiddenInput())
+    is_antonym = forms.BooleanField(required=False, label="Как антоним", initial=False)
+    antonym = forms.ModelChoiceField(queryset=Word.objects.filter(type=2, is_antonym=False).order_by('picture'), required=False, label="Антоним")
+    topic = forms.ModelChoiceField(queryset=Topic.objects.all().order_by('category'))
+
+
+class WordsToLearnForm(forms.Form):
+    date = forms.ChoiceField(label='Добавлено',
+                                    initial="",
+                                    required=False,
+                                    choices=periods,
+                                    widget=forms.Select(attrs={'onchange': 'submit();'})
+                                  )
+    type = forms.ModelChoiceField(label='Часть речи',
+                                  initial="",
+                                  required=False,
+                                  queryset=Type.objects.all(),
+                                  widget=forms.Select(attrs={'onchange': 'submit();'})
+                                  )

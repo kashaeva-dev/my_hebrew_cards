@@ -16,5 +16,7 @@ urlpatterns = [
     path('numbers/', views.numbers, name='numbers'),
     path('pronouns/', views.pronouns, name='pronouns'),
     path('add_noun/', views.add_noun, name='add_noun'),
-
+    path('add_verb/', views.add_verb, name='add_verb'),
+    path('add_adjective/', views.add_adjective, name='add_adjective'),
+    path('learn_words/', views.WordsToLearn.as_view(), name='learn_words')
 ]

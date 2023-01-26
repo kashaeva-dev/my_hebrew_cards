@@ -1,0 +1,70 @@
+
+h1 {
+    font-size: 26px;
+    text-transform: uppercase;
+    color: #23418b; /* синий цвет */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 0px;
+}
+
+.btn-blue {
+    background-color: #23418b;
+    color: white;
+
+}
+
+.btn-blue:hover {
+    color: #d5d5d5
+}
+
+.back-blue {
+    background-color: #23418b;
+}
+
+.prons-translation {
+    padding: 0px !important;
+    padding-left: 10px !important;
+    margin: 0px !important;
+    border-left: 2px solid #104080;
+}
+
+.prons-name-general {
+    padding: 0px !important;
+    padding-right: 10px !important;
+    margin: 0px !important;
+    text-align: right;
+}
+
+.no-border-top {
+    border-top: 0px !important;
+}
+
+.prons-name {
+    font-size: 24px;
+}
+
+.prons-pronunciation {
+    font-size: 14px;
+    color: #707070;
+}
+
+.prons-icon {
+    font-size: 18px;
+    margin: 0px !important;
+    padding-bottom: 0px !important;
+    padding-top: 28px !important;
+}
+
+.color-female {
+    color: #990066;
+
+}
+
+.color-male {
+    color: #104080;
+}
+
+.color-white {
+    color: white;
+}

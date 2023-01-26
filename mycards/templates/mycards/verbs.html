@@ -5,29 +5,19 @@
 
 
 <div class="row">
-    <div class="col-3" style="color: #23418b"> <!-- Настройка бокового меню -->
-        <form action="" method="get">
-            <table class="table p-0 m-0">
-            <tbody>
-            <tr>
-                <th scope="row"></th>
-                <td><label class="form-label p-0 m-0" for="{{ form.binyan.id_for_label }}">Биньян:</label></td>
-                <td>{{ form.binyan }}</td>
-            </tr>
-            <tr>
-                <th scope="row"></th>
-                <td><label class="form-label" for="{{ form.date.id_for_label }}">Добавлено:</label></td>
-                <td>{{ form.date }}</td>
-            </tr>
-            </tbody>
-            </table>
-        </form>
-    </div> <!-- Настройка бокового меню -->
+    <div class="col-2"></div>
     <div class="col-8">
+        <div class="row m-0 p-0" style="background: #F5F5F5">
+            <form action="" method="get" class="my-1 py-1">
+                <label class="form-label ml-4 my-0 py-0" for="{{ form.binyan.id_for_label }}" style="color: grey">Исключения:</label> {{ form.binyan }}
+                <label class="form-label ml-4 my-0 py-0" for="{{ form.date.id_for_label }}" style="color: grey">Добавлено:</label> {{ form.date }}
+            </form> <!-- Форма фильтрации слов -->
+        </div>
             <p class="p-2 mb-2 text-center" style="font-size: 24px; color: #23418b">ГЛАГОЛЫ</p>
                 {% for word in verbs_info %}
                 <div class="row p-0 m-0" style="border-top: 1px dashed #A0A0A0">
-                    <div class="col-1"><img src="{% static 'img/'%}{{ word.picture }}" width="65" height="45" class="d-inline-block align-top mr-1 rounded" alt="" data-toggle="tooltip" title="{{ word.id }}"></div>
+                    <div class="col-1">
+                        <img src="{% static 'img/'%}{{ word.picture }}" width="65" height="45" class="d-inline-block align-top mr-1 rounded" alt="" data-toggle="tooltip" title="{{ word.id }}"></div>
 
                     <div class="col-1 p-0 m-0"> <!-- word.translation -->
                     <table class="table table-borderless m-0 p-0">
@@ -35,9 +25,10 @@
                             <tr>
                                 <th class="m-0 p-0" scope="row"></th>
                                     <td class="pl-2 pr-0 py-0 my-0 mx-0" style="font-size: 18px">
-                                        {{ word.translation|upper }}
                                         {% if word.expressions|length > 0 %}
-                                        <a class="btn btn-outline-dark py-0 px-1 ml-3" data-toggle="collapse" href="#{{ word.name }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                        <a class="btn btn-outline-dark pl-1 pr-1 pt-0 pb-0 mt-1 mb-0 mx-0" data-toggle="collapse" href="#{{ word.name }}" role="button" aria-expanded="false" aria-controls="{{ expression.name }}">{{ word.translation|upper }}</a>
+                                        {% else %}
+                                        {{ word.translation|upper }}
                                         {% endif %}
                                     </td>
                             </tr>
@@ -104,12 +95,14 @@
                         </tbody>
                     </table>
                     </div> <!-- word.m1_name -->
-                    <div class="col-1 p-0 m-0 text-right"> <!-- word.binyan -->
+                    <div class="col-1 p-0 m-0 text-right"> <!-- word.preps -->
                         <table class="table table-borderless text-right p-0 m-0">
                         <tbody>
                             <tr>
+                                {% if word.preps != None %}
                                 <th scope="row"></th>
-                                <td class="p-0 mx-0" style="font-size: 18px; color: #707070">{{ word.binyan_output }}</td>
+                                <td class="p-0 mx-0" style="font-size: 18px; color: #707070">{{ word.preps }}</td>
+                                {% endif %}
                             </tr>
                         </tbody>
                     </table>
@@ -117,7 +110,7 @@
                 </div>
                 <div class="row">
                 <div class="col-2"></div>
-                <div class="col-6">
+                <div class="col-10">
                 <div class="collapse" id="{{ word.name }}">
                         {% if word.expressions|length > 0 %}
                            <ul class="list-group p-0 m-0 text-right">
@@ -134,7 +127,7 @@
                            </ul>
                 </div>
                 </div>
-                <div class="col-4"></div>
+                <div class=""></div>
             </div>
             {% endfor %}
     </div>

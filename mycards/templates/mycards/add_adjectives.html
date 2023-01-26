@@ -5,7 +5,7 @@
 
 {% load crispy_forms_tags %}
 
-<h1 class="text-center">Добавить существительное</h1>
+<h1 class="text-center">Добавить прилагательное</h1>
 
 
 <main class="container">
@@ -13,14 +13,13 @@
         <div class="col-3">
         </div>
         <div class="col-6">
-            <form class="" action="{% url 'add_noun' %}" method="post">
+            <form class="" action="{% url 'add_adjective' %}" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-            <input type="submit" value="Submit"  class="btn btn-blue">
+            <input type="submit" value="Добавить"  class="btn btn-blue">
             </form>
         </div>
         <div class="col-3">
-
         </div>
     </div>
 

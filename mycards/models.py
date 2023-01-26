@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Lower
 
 # Create your models here.
 class Binyan(models.Model):
@@ -8,12 +9,16 @@ class Binyan(models.Model):
 
 
     def __str__(self):
-        return str(self.name)
-
+        if self.name != None:
+            return " ".join([str(self.type), str(self.name)])
+        else:
+            return str(self.type)
 
 class Root(models.Model):
-    name = models.CharField(max_length=15, verbose_name="Подгруппа")
+    name = models.CharField(max_length=15, unique=True, verbose_name="Корень")
 
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return str(self.name)
@@ -33,6 +38,9 @@ class Topic(models.Model):
     category = models.CharField(max_length=25, verbose_name='Категория')
     name = models.CharField(max_length=25, verbose_name='Название', null=True)
     name_icon = models.CharField(max_length=25, verbose_name='Иконка', null=True)
+
+    def __str__(self):
+        return str(self.category)
 
 class FormType(models.Model):
     name = models.CharField(max_length=25, verbose_name='Название')
@@ -68,17 +76,21 @@ class Word(models.Model):
     antonym_word = models.ForeignKey('self', on_delete=models.PROTECT, related_name='antonym', verbose_name='Антоним', null=True, blank=True)
     categories = models.ManyToManyField(Category, through='Grouping', related_name='words')
     time_create = models.DateTimeField(auto_now_add=True)
-    
 
-    #def __str__(self):
-    #    return self.name + ' ' + self.picture.split('.')[0] + ' (' + str(self.pk) + ')'
+
+    def __str__(self):
+        return str(self.name) + ' ' + str(self.picture.split('.')[0]) + ' (' + str(self.pk) + ')'
 
 
     class Meta:
         verbose_name = "слово"
         verbose_name_plural = "слово"
         ordering = ['time_create', 'name']
-        unique_together = [("name", "picture")]
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'picture'], name='unique_word', violation_error_message="Такое слово уже есть в базе данных")
+        ]
+
+
 
 
 class Grouping(models.Model):
@@ -112,6 +124,5 @@ class Expression(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name='expressions', verbose_name='Тема', null=True)
     question_id = models.ForeignKey('self', on_delete=models.PROTECT, related_name='answers', verbose_name='Номер вопроса', null=True)
     comment = models.TextField(null=True)
-
 
 

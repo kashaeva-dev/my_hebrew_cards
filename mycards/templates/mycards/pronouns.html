@@ -5,118 +5,83 @@
 
 
 <main class="container">
-    <p class="text-center" style="font-size: 42px; color: #23418b">МЕСТОИМЕНИЯ</p><br>
-    <div class="row">
-        <div class="col-4" style="background-color: white; font-size: 20px; border-right: 2px solid black">
-            <p>с предлогом "ל"</p>
-            <table class="table text-right m-0 p-0">
-                <tbody>
-            {% for word in pronouns_info %}
-            <tr class="m-0 p-0">
-                <th scope="row m-0 p-0" style="border-top: 0px"></th>
-                {% if word.gender == 'женский' %}
-                <td class="m-0 p-0" style="color: white; border-top: 0px">{{ word.translation_l|upper }}</td>
-                <td class="text-right" style="border-top: 0px; font-size: 20px; color: #990066"><i class="fa fa-female" aria-hidden="true"></i></td>
-                <td class="m-0 px-0 py-1" style="border-top: 0px; color: #707070; font-size: 16px">[{{ word.pronunciation_l }}]</td>
-                <td class="m-0 p-0" style="border-top: 0px; font-size: 24px">{{ word.name_l }}</td>
-                {% elif word.gender == 'мужской' %}
-                <td class="m-0 p-0">{{ word.translation_l|upper }}</td>
-                <td class="text-right" style="font-size: 20px; color: #104080"><i class="fa fa-male" aria-hidden="true"></i></td>
-                <td class="m-0 px-0 py-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation_l }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name_l }}</td>
-                {% else %}
-                <td class="m-0 p-0">{{ word.translation_l|upper }}</td>
-                <td class="text-right" style="font-size: 20px; color: #FFFAFA"></td>
-                <td class="m-0 px-0 py-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation_l }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name_l }}</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        </div>
-        <div class="col-3" style="background-color: white; font-size: 20px; border-right: 2px solid black">
-            <p>с предлогом "של"</p>
-            <table class="table text-right m-0 p-0">
-                <tbody>
-            {% for word in pronouns_info %}
-            <tr class="m-0 p-0">
-                <th scope="row m-0 p-0" style="border-top: 0px"></th>
-                {% if word.gender == 'женский' %}
-                <td class="m-0 p-0" style="color: white; border-top: 0px">{{ word.translation_shl|upper }}</td>
-                <td class="text-right" style="border-top: 0px; font-size: 20px; color: #990066"><i class="fa fa-female" aria-hidden="true"></i></td>
-                <td class="m-0 px-0 py-1" style="border-top: 0px; color: #707070; font-size: 16px">[{{ word.pronunciation_shl }}]</td>
-                <td class="m-0 p-0" style="border-top: 0px; font-size: 24px">{{ word.name_shl }}</td>
-                {% elif word.gender == 'мужской' %}
-                <td class="m-0 p-0">{{ word.translation_shl|upper }}</td>
-                <td class="text-right" style="font-size: 20px; color: #104080"><i class="fa fa-male" aria-hidden="true"></i></td>
-                <td class="m-0 px-0 py-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation_shl }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name_shl }}</td>
-                {% else %}
-                <td class="m-0 p-0">{{ word.translation_shl|upper }}</td>
-                <td class="text-right" style="font-size: 20px; color: #FFFAFA"></td>
-                <td class="m-0 px-0 py-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation_shl }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name_shl }}</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        </div>
-        <div class="col-2" style="background-color: white; font-size: 20px; border-right: 2px solid #23418b">
-            <p>Суффикс</p>
-            <table class="table text-right m-0 p-0">
-                <tbody>
-            {% for word in pronouns_info %}
-            <tr class="m-0 p-0">
-                <th scope="row m-0 p-0" style="border-top: 0px"></th>
-                {% if word.gender == 'женский' %}
-                <td class="text-right" style="border-top: 0px; font-size: 20px; color: white"><i class="fa fa-female" aria-hidden="true"></i></td>
-                <td class="m-0 p-1" style="border-top: 0px; color: #707070; font-size: 16px">[{{ word.pronunciation_prs }}]</td>
-                <td class="m-0 p-0" style="border-top: 0px; font-size: 24px">{{ word.name_prs }}</td>
-                {% elif word.gender == 'мужской' %}
-                <td class="text-right" style="font-size: 20px; color: white"><i class="fa fa-male" aria-hidden="true"></i></td>
-                <td class="m-0 p-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation_prs }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name_prs }}</td>
-                {% else %}
-                <td class="text-right" style="font-size: 20px; color: #F8E5F9"></td>
-                <td class="m-0 p-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation_prs }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name_prs }}</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        </div>
-        <div class="col-3" style="background-color: white; font-size: 20px">
-            <p class="text-center">Личные местоимения</p>
-            <table class="table text-right m-0 p-0">
-                <tbody>
-            {% for word in pronouns_info %}
-            <tr class="m-0 p-0">
-                <th scope="row m-0 p-0" style="border-top: 0px"></th>
-                {% if word.gender == 'женский' %}
-                <td class="m-0 p-0" style="color: white; border-top: 0px">{{ word.translation|upper }}</td>
-                <td class="text-right" style="border-top: 0px; font-size: 20px; color: #990066"><i class="fa fa-female" aria-hidden="true"></i></td>
-                <td class="m-0 p-1" style="border-top: 0px; color: #707070; font-size: 16px">[{{ word.pronunciation }}]</td>
-                <td class="m-0 p-0" style="border-top: 0px; font-size: 24px">{{ word.name }}</td>
-                {% elif word.gender == 'мужской' %}
-                <td class="m-0 p-0">{{ word.translation|upper }}</td>
-                <td class="text-right" style="font-size: 20px; color: #104080"><i class="fa fa-male" aria-hidden="true"></i></td>
-                <td class="m-0 p-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name }}</td>
-                {% else %}
-                <td class="m-0 p-0">{{ word.translation|upper }}</td>
-                <td class="text-right" style="font-size: 20px; color: #FFFAFA"></td>
-                <td class="m-0 p-1" style="color: #707070; font-size: 16px">[{{ word.pronunciation }}]</td>
-                <td class="m-0 p-0" style="font-size: 24px">{{ word.name }}</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+    <h1 class="text-center">МЕСТОИМЕНИЯ</h1>
+    <table class="table">
+        <tr>
+            <td class="no-border-top"  style="border-top: 0px"></td>
+            <td class="text-center" colspan="3" style="border-top: 0px">C предлогом "את"</td>
+            <td class="text-center" colspan="3" style="border-top: 0px">C предлогом "ב"</td>
+            <td class="text-center" colspan="3" style="border-top: 0px">C предлогом "ל"</td>
+            <td class="text-center" colspan="3" style="border-top: 0px">C предлогом "של"</td>
+            <td class="text-center" colspan="3" style="border-top: 0px">Cуффикс</td>
+            <td class="text-center" colspan="3" style="border-top: 0px">Личные</td>
+        </tr>
+        {% for word in pronouns_info %}
+        <tr>
 
+            <th class = "m-0 p-0 no-border-top" scope="row">
+                {% if word.expressions|length > 0%}
+                  <a class="btn btn-light" data-toggle="modal" data-target="#{{ word.id }}">
+                    +
+                  </a>
+                {% endif %}
+            </th>
+
+            {% for form in word.forms %}
+            {% if form.gender == 'женский' %}
+            <td class="prons-translation no-border-top color-white">{{ form.translation|upper }}</td>
+            <td class="prons-icon no-border-top color-female"><i class="fa fa-female" aria-hidden="true"></i></td>
+            <td class="prons-name-general no-border-top"><span class="prons-name">{{ form.name }}</span><br><span  class="prons-pronunciation">[{{ form.pronunciation }}]</span></td>
+            {% elif form.gender == 'мужской' %}
+            <td class="prons-translation">{{ form.translation|upper }}</td>
+            <td class="prons-icon color-male"><i class="fa fa-male" aria-hidden="true"></i></td>
+            <td class="prons-name-general"><span  class="prons-name">{{ form.name }}</span><br><span  class="prons-pronunciation">[{{ form.pronunciation }}]</span></td>
+            {% else %}
+            <td class="prons-translation">{{ form.translation|upper }}</td>
+            <td></td>
+            <td class="prons-name-general"><span  class="prons-name">{{ form.name }}</span><br><span class="prons-pronunciation">[{{ form.pronunciation }}]</span></td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </table>
+        {% for word in pronouns_info %}
+        {% if word.expressions|length > 0%}
+    <div class="modal fade" id="{{ word.id }}" tabindex="-1" role="dialog" aria-labelledby="{{word.id}}Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="{{word.id}}Label">Выражения с местоимениями</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <div>
+                    {% for expression in word.expressions %}
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td class="prons-translation m-0 p-0">{{ expression.translation }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right no-border-top m-0 p-0">{{ expression.name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right prons-pronunciation no-border-top m-0 p-0">[{{ expression.pronunciation }}]</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
         </div>
+    </div>
+    {% endif %}
+    {% endfor %}
 </main>
 
 

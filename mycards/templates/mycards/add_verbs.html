@@ -1,0 +1,77 @@
+{% extends 'mycards/base.html' %}
+{% load custom_tags %}
+{%  load static %}
+{% block container %}
+
+{% load crispy_forms_tags %}
+
+<h1 class="text-center">Добавить глагол</h1>
+
+
+<main class="container">
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-blue" data-toggle="modal" data-target="#rootModal">+ корень</button>
+            <!-- Modal -->
+            <div class="modal fade" id="rootModal" tabindex="-1" role="dialog" aria-labelledby="rootModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rootModalLabel">Добавить новый корень</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                         <form class="" action="{% url 'add_verb' %}" method="post">
+                                {% csrf_token %}
+                             <div class="modal-body">
+                                 {{ form_new_root|crispy }}
+                             </div>
+                             <div class="modal-footer">
+                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                 <input type="submit" value="Добавить"  class="btn btn-blue">
+                             </div>
+                         </form>
+                     </div>
+                </div>
+            </div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-blue" data-toggle="modal" data-target="#binyanModal">+ биньян</button>
+            <!-- Modal -->
+            <div class="modal fade" id="binyanModal" tabindex="-1" role="dialog" aria-labelledby="BinyanModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="binyanModalLabel">Добавить новый биньян</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                    <form class="" action="" method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            {{ form_new_binyan|crispy }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            <input type="submit" value="Добавить"  class="btn btn-blue">
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+
+            <form class="" action="{% url 'add_verb' %}" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+            <input type="submit" value="Добавить"  class="btn btn-blue">
+            </form>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+</main>
+{% endblock %}
