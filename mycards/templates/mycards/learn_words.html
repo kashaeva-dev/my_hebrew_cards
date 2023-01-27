@@ -37,39 +37,51 @@
     </form>
 </form>
     </div>
-    <div class="col-8">
+    <div class="col-9">
 
     {% for word in words %}
     <table class="table m-0 p-0">
           <tbody>
             <tr>
-                <td></td>
-                <td class="text-center">
+                <td class="no-border-top">
+                </td>
+                <td class="text-center no-border-top">
                     <p class="text-center learn-word-name m-0 p-0 {% if word.gender == 'женский' %} color-female {% elif word.gender == 'мужской' %} color-male {% endif %}">{{ word.name }}</p><br>
                     <p class="text-center learn-word-pronunciation color-white m-0 p-0">[{{ word.pronunciation }}]</p>
                     <p class="text-center learn-word-translation color-white m-0 p-0">{{ word.translation }}</p><br>
+                    {% if page_obj.has_previous %}
+                    <a class="btn btn-light btn-lg text-left color-grey" href="?{{ query_string }}&page={{ page_obj.previous_page_number }}" role="button">НАЗАД</a>
+                    {% else %}
+                    <a class="btn btn-light btn-lg text-left color-light-grey" href="#" role="button">НАЗАД</a>
+                    {% endif %}
                     <button class="btn btn-light btn-lg text-center color-grey show-translation" type="submit">ПЕРЕВОД</button>
                     <button class="btn btn-light btn-lg text-center color-grey show-pronunciation" type="submit">ПРОИЗНОШЕНИЕ</button>
+                    {% if page_obj.has_next %}
+                    <a class="btn btn-light btn-lg text-right color-grey" href="?{{ query_string }}&page={{ page_obj.next_page_number }}" role="button">ВПЕРЕД</a>
+                    {% else %}
+                    <a class="btn btn-light btn-lg text-left color-light-grey" href="#" role="button">ВПЕРЕД</a>
+                    {% endif %}
                 </td>
-                <td></td>
+                <td class="no-border-top text-right">
+                </td>
             </tr>
             <tr>
-                <td>
+                <td> <!--
                 {% if page_obj.has_previous %}
                     <a class="btn btn-light btn-lg text-left color-grey" href="?{{ query_string }}&page={{ page_obj.previous_page_number }}" role="button">НАЗАД</a>
                     {% else %}
                     <a class="btn btn-light btn-lg text-left color-light-grey" href="#" role="button">НАЗАД</a>
-                {% endif %}
+                {% endif %} -->
                 </td>
                 <td>
                     <p class="text-center learn-word-display-pages pt-2">{{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</p>
                 </td>
-                <td class="text-right">
+                <td class="text-right"> <!--
                 {% if page_obj.has_next %}
                 <a class="btn btn-light btn-lg text-right color-grey" href="?{{ query_string }}&page={{ page_obj.next_page_number }}" role="button">ВПЕРЕД</a>
                     {% else %}
                     <a class="btn btn-light btn-lg text-left color-light-grey" href="#" role="button">ВПЕРЕД</a>
-                {% endif %}
+                {% endif %} -->
                 </td>
             </tr>
           </tbody>
@@ -77,7 +89,7 @@
     {% endfor %}
     </div>
     </div>
-    <div class="col-2">
+    <div class="col-1">
     </div>
 <script src="{% static 'js/learn-words.js' %}"></script>
 {% endblock %}

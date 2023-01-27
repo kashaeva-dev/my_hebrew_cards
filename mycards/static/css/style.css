@@ -11,6 +11,7 @@ h1 {
     padding-bottom: 0px;
 }
 
+
 .btn-blue {
     background-color: #23418b;
     color: white;
@@ -68,12 +69,14 @@ h1 {
 .learn-word-pronunciation {
     font-size: 36px;
     color: #F3F3F3;
+    padding: 0px !important;
 
 }
 
 .learn-word-translation {
    font-size: 72px;
    color: #F3F3F3;
+   white-space: nowrap;
 }
 
 .learn-word-display-pages {
