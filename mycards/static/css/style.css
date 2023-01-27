@@ -59,19 +59,10 @@ h1 {
     padding-top: 28px !important;
 }
 
-.color-female {
-    color: #990066;
-
-}
-
-.color-male {
-    color: #104080;
-}
-
 .learn-word-name {
     font-size: 108px;
     white-space: nowrap;
-    color: #23418b;
+    color: #D2691E;
 }
 
 .learn-word-pronunciation {
@@ -102,4 +93,14 @@ h1 {
 
 .color-light-grey {
     color: #F2F2F2;
+}
+
+
+.color-female {
+    color: #990066;
+
+}
+
+.color-male {
+    color: #23418b;
 }

@@ -128,14 +128,9 @@ class WordsToLearnForm(forms.Form):
                                   widget=forms.Select(attrs={'onchange': 'submit();'})
                                   )
     form_type = forms.ChoiceField(label='Форма слова',
-                                  choices=[('[0]', ''),
-                                           ('[1]', 'начальная'),
-                                           ('[1, 2, 3, 4]',
+                                  choices=[('[1]', 'начальная'),
+                                           ('[1, 2, 3, 4, 6, 7, 8, 9]',
                                             'основные'),
-                                           ('[6]', 'с предлогом "של"'),
-                                           ('[7]', 'с предлогом "ל"'),
-                                           ('[8]', 'с предлогом "ב"'),
-                                           ('[9]', 'с предлогом "את"'),
                                            ],
                                   required=False,
                                   widget=forms.Select(attrs={'onchange': 'submit();'})

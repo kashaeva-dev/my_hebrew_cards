@@ -3,7 +3,7 @@ from django.urls import path
 import mycards.views as views
 
 urlpatterns = [
-    path('', views.cards_main, name='main'),
+    path('', views.WordsToLearn.as_view(), name='main'),
     path('verbs_print/', views.cards_verbs, name='verbs_print'),
     path('nouns_exceptions/', views.table_nouns_exceptions, name='nouns_exceptions'),
     path('questions/', views.question_words, name='questions'),
@@ -18,5 +18,5 @@ urlpatterns = [
     path('add_noun/', views.add_noun, name='add_noun'),
     path('add_verb/', views.add_verb, name='add_verb'),
     path('add_adjective/', views.add_adjective, name='add_adjective'),
-    path('learn_words/', views.WordsToLearn.as_view(), name='learn_words')
+    path('word_cloud/', views.cards_main, name='cloud')
 ]

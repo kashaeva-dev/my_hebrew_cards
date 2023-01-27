@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <td><label class="form-label m-0 pb-2 pl-2" for="{{ form.date.id_for_label }}">Добавлено:</label><br>
-                    <span class="pl-2"> {{ form.type }}</span>
+                    <span class="pl-2"> {{ form.date }}</span>
                 </td>
             </tr>
             <tr>
@@ -40,14 +40,14 @@
     <div class="col-8">
 
     {% for word in words %}
-    <table class="table">
+    <table class="table m-0 p-0">
           <tbody>
             <tr>
                 <td></td>
                 <td class="text-center">
-                    <p class="text-center learn-word-name">{{ word.name }}</p><br>
-                    <p class="text-center learn-word-pronunciation color-white">[{{ word.pronunciation }}]</p>
-                    <p class="text-center learn-word-translation color-white">{{ word.translation }}</p><br>
+                    <p class="text-center learn-word-name m-0 p-0 {% if word.gender == 'женский' %} color-female {% elif word.gender == 'мужской' %} color-male {% endif %}">{{ word.name }}</p><br>
+                    <p class="text-center learn-word-pronunciation color-white m-0 p-0">[{{ word.pronunciation }}]</p>
+                    <p class="text-center learn-word-translation color-white m-0 p-0">{{ word.translation }}</p><br>
                     <button class="btn btn-light btn-lg text-center color-grey show-translation" type="submit">ПЕРЕВОД</button>
                     <button class="btn btn-light btn-lg text-center color-grey show-pronunciation" type="submit">ПРОИЗНОШЕНИЕ</button>
                 </td>
