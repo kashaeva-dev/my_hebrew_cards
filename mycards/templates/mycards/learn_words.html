@@ -8,13 +8,37 @@
 
 
 <div class="row">
-    <div class="col-2 p-5">
-        {{ form| crispy }}
+    <div class="col-2">
+            <form action="" method="get" class="">
+                <table class="table table-borderless m-0 pl-2">
+          <tbody>
+            <tr>
+                <td><label class="form-label m-0 pb-2 pl-2" for="{{ form.type.id_for_label }}" >Часть речи:</label><br>
+                    <span class="pl-2"> {{ form.type }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><label class="form-label m-0 pb-2 pl-2" for="{{ form.date.id_for_label }}">Добавлено:</label><br>
+                    <span class="pl-2"> {{ form.type }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><label class="form-label m-0 pb-2 pl-2" for="{{ form.form_type.id_for_label }}">Форма слова:</label><br>
+                    <span class="pl-2"> {{ form.form_type }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><label class="form-label m-0 pb-2 pl-2" for="{{ form.sort.id_for_label }}">Сортировка:</label><br>
+                <span class="pl-2"> {{ form.sort }}</span>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+    </form>
+</form>
     </div>
     <div class="col-8">
-        <div class="row m-0 p-0 text-center" style="background: #F3F3F3">
 
-</div>
     {% for word in words %}
     <table class="table">
           <tbody>
