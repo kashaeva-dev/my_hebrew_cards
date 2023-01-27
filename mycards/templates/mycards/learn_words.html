@@ -4,37 +4,61 @@
 {% block container %}
 {% load crispy_forms_tags %}
 
-<div class="row m-0 p-0 text-center" style="background: #F5F5F5">
-    <form action="" method="get" class="my-1 py-1">
-        <label class="form-label ml-2 my-0 py-0" for="{{ form.type.id_for_label }}" style="color: grey">Часть речи:</label><span style="m-0 p-0"> {{ form.type }}</span>
-        <label class="form-label ml-4 my-0 py-0" for="{{ form.date.id_for_label }}" style="color: grey">Добавлено:</label> {{ form.date }}
+
+
+
+<div class="row">
+    <div class="col-2">
+    </div>
+    <div class="col-8">
+        <div class="row m-0 p-0 text-center" style="background: #F3F3F3">
+    <form action="" method="get" class="">
+        <label class="form-label ml-2 my-0 pt-2 pb-0" for="{{ form.type.id_for_label }}" style="background: #F3F3F3; color: grey">Часть речи:</label><span style="m-0 p-0"> {{ form.type }}</span>
+        <label class="form-label ml-2 my-0 pt-2 pb-0" for="{{ form.date.id_for_label }}" style="background: #F3F3F3; color: grey">Добавлено:</label> {{ form.date }}
+        <label class="form-label ml-2 my-0 pt-2 pb-0" for="{{ form.form_type.id_for_label }}" style="background: #F3F3F3; color: grey">Форма слова:</label> {{ form.form_type }}
+        <label class="form-label ml-2 my-0 pt-2 pb-0" for="{{ form.sort.id_for_label }}" style="background: #F3F3F3; color: grey">Сортировка:</label> {{ form.sort }}
     </form>
-
 </form>
-
-<main class="container">
-
 </div>
     {% for word in words %}
-    <h1 class="text-center" style="font-size: 144px">{{ word.name }}</h1><br>
-    <p class="text-center">{{ word.pronunciation }}</p>
-    <p class="text-center">{{ word.translation }}</p>
+    <table class="table">
+          <tbody>
+            <tr>
+                <td></td>
+                <td class="text-center">
+                    <p class="text-center learn-word-name">{{ word.name }}</p><br>
+                    <p class="text-center learn-word-pronunciation color-white">[{{ word.pronunciation }}]</p>
+                    <p class="text-center learn-word-translation color-white">{{ word.translation }}</p><br>
+                    <button class="btn btn-light btn-lg text-center color-grey show-translation" type="submit">ПЕРЕВОД</button>
+                    <button class="btn btn-light btn-lg text-center color-grey show-pronunciation" type="submit">ПРОИЗНОШЕНИЕ</button>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-light btn-lg text-left color-grey" href="?{{ query_string }}&page={{ page_obj.previous_page_number }}" role="button">НАЗАД</a>
+                    {% else %}
+                    <a class="btn btn-light btn-lg text-left color-light-grey" href="#" role="button">НАЗАД</a>
+                {% endif %}
+                </td>
+                <td>
+                    <p class="text-center learn-word-display-pages pt-2">{{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</p>
+                </td>
+                <td class="text-right">
+                {% if page_obj.has_next %}
+                <a class="btn btn-light btn-lg text-right color-grey" href="?{{ query_string }}&page={{ page_obj.next_page_number }}" role="button">ВПЕРЕД</a>
+                    {% else %}
+                    <a class="btn btn-light btn-lg text-left color-light-grey" href="#" role="button">ВПЕРЕД</a>
+                {% endif %}
+                </td>
+            </tr>
+          </tbody>
+        </table>
     {% endfor %}
-    <nav aria-label="Слова для изучения">
-    <ul class="pagination justify-content-center">
-        {% for p in paginator.page_range %}
-        {% if page_obj.number == p %}
-        <li class="page-item active">
-            <a class="page-link" href="?{{ query_string }}&page={{ p }}">{{ p }}</a>
-        </li>
-        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-        <li class="page-item">
-            <a class="page-link" href="?{{ query_string }}&page={{ p }}">{{ p }}</a>
-        </li>
-        {% endif %}
-        {% endfor %}
-    </ul>
-</nav>
-</main>
-
+    </div>
+    </div>
+    <div class="col-2">
+    </div>
+<script src="{% static 'js/learn-words.js' %}"></script>
 {% endblock %}

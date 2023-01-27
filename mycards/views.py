@@ -1071,11 +1071,16 @@ class WordsToLearn(ListView):
         return context
 
     def get_queryset(self):
-        word_queryset = WordForm.objects.filter(form_type=1)
+        word_queryset = WordForm.objects.all()
         form = self.form(self.request.GET)
         if form.is_valid():
             type = form.cleaned_data.get('type')
             date = form.cleaned_data.get('date')
+            sort = form.cleaned_data.get('sort')
+            try:
+                form_type_lst = list(map(int, form.cleaned_data['form_type'].strip('[]').split(', ')))
+            except:
+                form_type_lst = []
             today = timezone.now()
             try:
                 DD = dt.timedelta(days=int(date))
@@ -1086,4 +1091,9 @@ class WordsToLearn(ListView):
                 word_queryset = word_queryset.filter(word__type=type)
             if date:
                 word_queryset = word_queryset.filter(word__time_create__gt=earlier)
+            if form_type_lst:
+                word_queryset = word_queryset.filter(form_type__in=form_type_lst)
+            if sort:
+                word_queryset = word_queryset.order_by(sort)
         return word_queryset
+
