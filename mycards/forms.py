@@ -112,13 +112,13 @@ class AdjectivesAddForm(forms.Form):
 
 class WordsToLearnForm(forms.Form):
     date = forms.ChoiceField(label='Добавлено',
-                                    initial="",
                                     required=False,
+                                    initial='',
                                     choices=periods,
                                     widget=forms.Select(attrs={'onchange': 'submit();'})
                                   )
     type = forms.ModelChoiceField(label='Часть речи',
-                                  initial="",
+                                  initial='',
                                   required=False,
                                   queryset=Type.objects.all(),
                                   widget=forms.Select(attrs={'onchange': 'submit();'})

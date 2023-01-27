@@ -1,22 +1,21 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
-from django.core.paginator import Paginator
-from django.http import HttpResponse
-from .models import *
-from .forms import *
-from .filters_data import topics
-from pathlib import Path
-import os.path
-from django.conf import settings
 import datetime as dt
-from .functions import *
-import pymorphy2
+import os.path
 import random
-from bidi.algorithm import get_display
-import wordcloud
-import numpy as np
+from pathlib import Path
+
 import matplotlib.pyplot as plt
-from django.db import IntegrityError
+import numpy as np
+import pymorphy2
+import wordcloud
+from bidi.algorithm import get_display
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.views.generic import ListView
+
+from .forms import *
+from .functions import *
+
 morph = pymorphy2.MorphAnalyzer()
 
 
@@ -1058,22 +1057,33 @@ class WordsToLearn(ListView):
     model = WordForm
     template_name = 'mycards/learn_words.html'
     context_object_name = 'words'
+    form = WordsToLearnForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Запомнить"
-        context['form'] = WordsToLearnForm(self.request.GET)
+        context['form'] = self.form(self.request.GET)
+        # Create new QueryDict without 'page'
+        query = self.request.GET.copy()
+        if 'page' in query:
+            del query['page']
+        context['query_string'] = query.urlencode()
         return context
 
     def get_queryset(self):
-        word_queryset = WordForm.objects.filter(word__type=form.cleaned_data["type"], form_type=1)
+        word_queryset = WordForm.objects.filter(form_type=1)
+        form = self.form(self.request.GET)
         if form.is_valid():
-            if form.cleaned_data["type"]:
-                word_queryset = word_queryset.filter()
-            if form.cleaned_data["date"]:
-                today = dt.datetime.now()
-                DD = dt.timedelta(days=int(form.cleaned_data['date']))
-                earlier = today - DD
+            type = form.cleaned_data.get('type')
+            date = form.cleaned_data.get('date')
+            today = timezone.now()
+            try:
+                DD = dt.timedelta(days=int(date))
+            except:
+                DD = dt.timedelta(days=int(10000))
+            earlier = today - DD
+            if type:
+                word_queryset = word_queryset.filter(word__type=type)
+            if date:
                 word_queryset = word_queryset.filter(word__time_create__gt=earlier)
-
         return word_queryset

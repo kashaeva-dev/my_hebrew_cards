@@ -4,30 +4,32 @@
 {% block container %}
 {% load crispy_forms_tags %}
 
-
-
-<main class="container">
-<div class="row m-0 p-0" style="background: #F5F5F5">
+<div class="row m-0 p-0 text-center" style="background: #F5F5F5">
     <form action="" method="get" class="my-1 py-1">
         <label class="form-label ml-2 my-0 py-0" for="{{ form.type.id_for_label }}" style="color: grey">Часть речи:</label><span style="m-0 p-0"> {{ form.type }}</span>
         <label class="form-label ml-4 my-0 py-0" for="{{ form.date.id_for_label }}" style="color: grey">Добавлено:</label> {{ form.date }}
-    </form> <!-- Форма фильтрации слов -->
+    </form>
+
+</form>
+
+<main class="container">
+
 </div>
     {% for word in words %}
-    {{ word.vocal_name }}
-    {{ word.pronunciation }}
-    {{ word.translation }}
+    <h1 class="text-center" style="font-size: 144px">{{ word.name }}</h1><br>
+    <p class="text-center">{{ word.pronunciation }}</p>
+    <p class="text-center">{{ word.translation }}</p>
     {% endfor %}
     <nav aria-label="Слова для изучения">
     <ul class="pagination justify-content-center">
         {% for p in paginator.page_range %}
         {% if page_obj.number == p %}
         <li class="page-item active">
-            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+            <a class="page-link" href="?{{ query_string }}&page={{ p }}">{{ p }}</a>
         </li>
         {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+            <a class="page-link" href="?{{ query_string }}&page={{ p }}">{{ p }}</a>
         </li>
         {% endif %}
         {% endfor %}
