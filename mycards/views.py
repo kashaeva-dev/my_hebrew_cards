@@ -25,7 +25,7 @@ def cards_main(request):
     D1 = dt.timedelta(days=3)
     date_limit = today - D1
     new_words = Word.objects.all().order_by('-time_create')[:50]
-    words = [" ".join([word.picture.split('.')[0], get_display(word.name)]) for word in new_words]
+    words = [" ".join([word.picture.split('.')[0], word.name]) for word in new_words]
 
 
     # Create an empty dictionary
@@ -167,7 +167,6 @@ def question_words(request):
 
 def adjectives(request):
     topics = Topic.objects.exclude(pk=0)
-
     adjectives = Word.objects.filter(type_id=2, is_antonym=1)
     adjectives_info = []
     form_type = FormType.objects.all()
@@ -1097,3 +1096,81 @@ class WordsToLearn(ListView):
                 word_queryset = word_queryset.order_by(sort)
         return word_queryset
 
+
+def adverbs(request):
+    topics = Topic.objects.exclude(pk=0)
+    adverbs = Word.objects.filter(type_id__in=[11, 13, 14, 15, 16, 17])
+    adverbs_info = []
+    form_type = FormType.objects.all()
+    for adverb in adverbs:
+        adverb_info = dict()
+        expressions_info = []
+        other_forms = []
+        if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', adverb.picture)).exists():
+            adverb_info['picture'] = adverb.picture
+        else:
+            adverb_info['picture'] = 'нет фото.jpg'
+        adverb_info['id'] = adverb.pk
+        for form in adverb.forms.all():
+            if form.form_type == form_type[0]:
+                adverb_info['name'] = form.vocal_name
+                adverb_info['translation'] = form.translation
+                adverb_info['pronunciation'] = form.pronunciation
+            else:
+                other_form = dict()
+                other_form['name'] = form.vocal_name
+                other_form['translation'] = form.translation
+                other_form['pronunciation'] = form.pronunciation
+                other_forms.append(other_form)
+        for expression in adverb.expressions.all():
+            expression_info = dict()
+            expression_info['name'] = expression.expression
+            expression_info['translation'] = expression.translation
+            expression_info['pronunciation'] = expression.pronunciation
+            expressions_info.append(expression_info)
+        adverb_info['other_forms'] = other_forms
+        adverb_info['expressions'] = expressions_info
+        adverbs_info.append(adverb_info)
+
+    adverbs_info = sorted(adverbs_info, key=lambda word: word['translation'], reverse=False)
+    return render(request, "mycards/adverbs.html", {'adverbs_info': adverbs_info, 'topics': topics, 'title': 'НАРЕЧИЯ'})
+
+
+def adverbs_filter(request, topic):
+    topics = Topic.objects.exclude(pk=0)
+    adverbs = Word.objects.filter(type_id__in=[11, 13, 14, 15, 16, 17])
+    adverbs = adverbs.filter(topic=topic)
+    adverbs_info = []
+    form_type = FormType.objects.all()
+    for adverb in adverbs:
+        adverb_info = dict()
+        expressions_info = []
+        other_forms = []
+        if Path(os.path.join(settings.BASE_DIR, 'mycards/static/img', adverb.picture)).exists():
+            adverb_info['picture'] = adverb.picture
+        else:
+            adverb_info['picture'] = 'нет фото.jpg'
+        adverb_info['id'] = adverb.pk
+        for form in adverb.forms.all():
+            if form.form_type == form_type[0]:
+                adverb_info['name'] = form.vocal_name
+                adverb_info['translation'] = form.translation
+                adverb_info['pronunciation'] = form.pronunciation
+            else:
+                other_form = dict()
+                other_form['name'] = form.vocal_name
+                other_form['translation'] = form.translation
+                other_form['pronunciation'] = form.pronunciation
+                other_forms.append(other_form)
+        for expression in adverb.expressions.all():
+            expression_info = dict()
+            expression_info['name'] = expression.expression
+            expression_info['translation'] = expression.translation
+            expression_info['pronunciation'] = expression.pronunciation
+            expressions_info.append(expression_info)
+        adverb_info['other_forms'] = other_forms
+        adverb_info['expressions'] = expressions_info
+        adverbs_info.append(adverb_info)
+
+    adverbs_info = sorted(adverbs_info, key=lambda word: word['translation'], reverse=False)
+    return render(request, "mycards/adverbs.html", {'adverbs_info': adverbs_info, 'topics': topics, 'title': 'НАРЕЧИЯ'})

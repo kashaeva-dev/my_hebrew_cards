@@ -32,7 +32,13 @@ h1 {
     margin: 0px !important;
     border-left: 2px solid #104080;
 }
-
+.word-translation {
+    padding: 0px !important;
+    padding-top: 5px !important;
+    padding-left: 10px !important;
+    margin: 0px !important;
+    font-size: 20px;
+}
 .prons-name-general {
     padding: 0px !important;
     padding-right: 10px !important;
@@ -43,16 +49,25 @@ h1 {
 .no-border-top {
     border-top: 0px !important;
 }
-
+.dashed-border-top{
+    border-top: 1.5px dashed #A0A0A0;
+}
 .prons-name {
     font-size: 24px;
 }
-
+.word-name {
+    font-size: 26px;
+}
 .prons-pronunciation {
     font-size: 14px;
     color: #707070;
 }
-
+.word-pronunciation {
+    font-size: 18px;
+    color: #707070;
+    margin-top: 28px !important;
+}
+.
 .prons-icon {
     font-size: 18px;
     margin: 0px !important;
@@ -106,4 +121,8 @@ h1 {
 
 .color-male {
     color: #23418b;
+}
+
+.fs-6 {
+    font-size: 6px;
 }
