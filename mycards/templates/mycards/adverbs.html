@@ -23,23 +23,44 @@
     </div>
     <div class="col-10">
         <div class="container">
-
             <div class="col-1"></div>
             <div class="col-10">
+                <div class="row m-0 p-0" style="background: #F5F5F5">
+                        <form action="" method="get" class="my-1 py-1">
+                            <label class="form-label ml-2 my-0 py-0" for="{{ form1.type.id_for_label }}" style="color: grey">Часть речи: </label><span style="m-0 p-0">{{ form1.type }}</span>
+                            <label class="form-label ml-4 my-0 py-0" for="{{ form1.date.id_for_label }}" style="color: grey">Добавлено: </label> {{ form1.date }}
+                        </form> <!-- Форма фильтрации слов -->
+                </div>
                 <h1 class="text-center">НАРЕЧИЯ И ПРОЧИЕ ЧАСТИ РЕЧИ</h1>
             <table class="table dashed-border-top">
                 {% for word in adverbs_info %}
                 <tr>
                     <th class = "m-0 p-0 " scope="row">
                     {% if word.expressions|length > 0%}
-                    <a class="btn btn-light" data-toggle="modal" data-target="#{{ word.id }}">
+                    <a class="btn btn-light" data-toggle="collapse" data-target="#{{ word.id }}">
                     +
                     </a>
                     {% endif %}
                     </th>
-                    <td class="word-translation">{{ word.translation|upper }}</td>
+                    <td class="word-translation">{{ word.translation|upper }}<br>
+                    <div class="collapse" id="{{ word.id }}">
+                        {% if word.expressions|length > 0 %}
+                           <ul class="p-0 m-0 text-right">
+                               {% for expression in word.expressions %}
+                              <li class="list-group-item pl-0 pb-1 only-bottom">
+                                   <div class="row" style="font-size: 16px">
+                                       <div class="col-5 text-left">{{ expression.translation }}</div>
+                                       <div class="col-5 word-name-general color-male text-right"><span class="word-name-20">{{ expression.name }}</span><br>
+                                           <span class="word-pronunciation mt-3">[{{ expression.pronunciation }}]</span></div>
+                                   </div>
+                              </li>
+                               {% endfor %}
+                               {% endif %}
+                           </ul>
+                    </div>
+                    </td>
                     <td class="word-name-general color-male text-right"><span class="word-name">{{ word.name }}</span><br><br class="fs-6">
-                        <span class="word-pronunciation mt-3">[{{ word.pronunciation }}]</span></td>
+                        <span class="word-pronunciation mt-1">[{{ word.pronunciation }}]</span></td>
                 </tr>
                 {% endfor %}
              </table>

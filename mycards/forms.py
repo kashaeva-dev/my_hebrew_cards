@@ -64,6 +64,14 @@ class VerbsFilterForm(forms.Form):
                              choices=periods,
                              widget=forms.Select(attrs={'onchange': 'submit();'})
                              )
+    printed = forms.ChoiceField(label='Напечатано',
+                             initial='',
+                             required=False,
+                             choices=[('', ''),
+                                        (0, 'нет'),
+                                        (2, 'да')],
+                             widget=forms.Select(attrs={'onchange': 'submit();'})
+                             )
 
 
 class NounsAddForm(forms.Form):
@@ -88,6 +96,7 @@ class VerbsAddForm(forms.Form):
     root = forms.ModelChoiceField(queryset=Root.objects.all(), label="Корень")
     type = forms.ModelChoiceField(label="Часть речи", queryset=Type.objects.filter(pk=6), initial=6,
                                   widget=forms.HiddenInput())
+    prep = forms.CharField(max_length=10, label="Предлог", required=False)
 
 
 class BinyanAddForm(forms.ModelForm):
@@ -142,3 +151,31 @@ class WordsToLearnForm(forms.Form):
                              required=False,
                              widget=forms.Select(attrs={'onchange': 'submit();'})
                              )
+
+
+class AdverbsFilterForm(forms.Form):
+    type = forms.ModelChoiceField(label='Часть речи',
+                                  initial='',
+                                  required=False,
+                                  queryset=Type.objects.filter(
+                                      pk__in=[11, 13, 14, 15, 16, 17]),
+                                  widget=forms.Select(attrs={'onchange': 'submit();'})
+                                  )
+    date = forms.ChoiceField(label='Добавлено',
+                             initial="",
+                             required=False,
+                             choices=periods,
+                             widget=forms.Select(attrs={'onchange': 'submit();'})
+                             )
+
+
+class AdverbsAddForm(forms.Form):
+    type = forms.ModelChoiceField(label='Часть речи',
+                                  initial='',
+                                  required=False,
+                                  queryset=Type.objects.filter(
+                                      pk__in=[11, 13, 14, 15, 16, 17])
+                                  )
+    text = forms.CharField(label="Слово с огласовками и произношение", widget=forms.Textarea(attrs={'cols': 40, 'rows': 5}))
+    translation = forms.CharField(max_length=255, label="Перевод слова")
+    topic = forms.ModelChoiceField(queryset=Topic.objects.all().order_by('category'))

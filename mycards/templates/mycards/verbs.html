@@ -11,6 +11,7 @@
             <form action="" method="get" class="my-1 py-1">
                 <label class="form-label ml-4 my-0 py-0" for="{{ form.binyan.id_for_label }}" style="color: grey">Исключения:</label> {{ form.binyan }}
                 <label class="form-label ml-4 my-0 py-0" for="{{ form.date.id_for_label }}" style="color: grey">Добавлено:</label> {{ form.date }}
+                <label class="form-label ml-4 my-0 py-0" for="{{ form.printed.id_for_label }}" style="color: grey">Напечатано:</label> {{ form.printed }}
             </form> <!-- Форма фильтрации слов -->
         </div>
             <p class="p-2 mb-2 text-center" style="font-size: 24px; color: #23418b">ГЛАГОЛЫ</p>
@@ -109,7 +110,7 @@
                     </div> <!-- word.binyan -->
                 </div>
                 <div class="row">
-                <div class="col-2"></div>
+                <div class="col-1"></div>
                 <div class="col-10">
                 <div class="collapse" id="{{ word.name }}">
                         {% if word.expressions|length > 0 %}
@@ -127,7 +128,7 @@
                            </ul>
                 </div>
                 </div>
-                <div class=""></div>
+                <div class="col-1"></div>
             </div>
             {% endfor %}
     </div>

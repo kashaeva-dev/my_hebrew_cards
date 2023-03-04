@@ -576,6 +576,8 @@ def verbs_all(request):
             DD = dt.timedelta(days=int(verbs_form.cleaned_data['date']))
             earlier = today - DD
             verbs = verbs.filter(time_create__gt=earlier)
+        if verbs_form.cleaned_data["printed"]:
+            verbs = verbs.filter(printed=verbs_form.cleaned_data['printed'])
 
     verbs_info = []
     form_type = FormType.objects.all()[0]
@@ -944,6 +946,8 @@ def add_verb(request):
                 wordform['pronunciation'] = names[1]
                 wordform['translation'] = data['translation']
                 wordform['word'] = new_verb
+                if data['prep'] != "":
+                    wordform['example']  = data['prep']
                 try:
                     WordForm.objects.create(**wordform)
                 except:
@@ -1100,6 +1104,15 @@ class WordsToLearn(ListView):
 def adverbs(request):
     topics = Topic.objects.exclude(pk=0)
     adverbs = Word.objects.filter(type_id__in=[11, 13, 14, 15, 16, 17])
+    form1 = AdverbsFilterForm(request.GET)
+    if form1.is_valid():
+        if form1.cleaned_data["type"]:
+            adverbs = adverbs.filter(type_id=form1.cleaned_data['type']).distinct()
+        if form1.cleaned_data["date"]:
+            today = dt.datetime.now()
+            DD = dt.timedelta(days=int(form1.cleaned_data['date']))
+            earlier = today - DD
+            adverbs = adverbs.filter(time_create__gt=earlier)
     adverbs_info = []
     form_type = FormType.objects.all()
     for adverb in adverbs:
@@ -1133,13 +1146,22 @@ def adverbs(request):
         adverbs_info.append(adverb_info)
 
     adverbs_info = sorted(adverbs_info, key=lambda word: word['translation'], reverse=False)
-    return render(request, "mycards/adverbs.html", {'adverbs_info': adverbs_info, 'topics': topics, 'title': 'НАРЕЧИЯ'})
+    return render(request, "mycards/adverbs.html", {'adverbs_info': adverbs_info, 'topics': topics, 'title': 'НАРЕЧИЯ', 'form1': form1})
 
 
 def adverbs_filter(request, topic):
     topics = Topic.objects.exclude(pk=0)
     adverbs = Word.objects.filter(type_id__in=[11, 13, 14, 15, 16, 17])
     adverbs = adverbs.filter(topic=topic)
+    form1 = AdverbsFilterForm(request.GET)
+    if form1.is_valid():
+        if form1.cleaned_data["type"]:
+            adverbs = adverbs.filter(type_id=form1.cleaned_data['type']).distinct()
+        if form1.cleaned_data["date"]:
+            today = dt.datetime.now()
+            DD = dt.timedelta(days=int(form1.cleaned_data['date']))
+            earlier = today - DD
+            adverbs = adverbs.filter(time_create__gt=earlier)
     adverbs_info = []
     form_type = FormType.objects.all()
     for adverb in adverbs:
@@ -1173,4 +1195,38 @@ def adverbs_filter(request, topic):
         adverbs_info.append(adverb_info)
 
     adverbs_info = sorted(adverbs_info, key=lambda word: word['translation'], reverse=False)
-    return render(request, "mycards/adverbs.html", {'adverbs_info': adverbs_info, 'topics': topics, 'title': 'НАРЕЧИЯ'})
+    return render(request, "mycards/adverbs.html", {'adverbs_info': adverbs_info, 'topics': topics, 'title': 'НАРЕЧИЯ', 'form1': form1})
+
+
+def add_adverb(request):
+    form_types = FormType.objects.all()
+    if request.method == 'POST':
+        form = AdverbsAddForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            word_parts = data['text'].splitlines()
+            word = dict()
+            word['type'] = data['type']
+            word['name'] = only_letters(word_parts[0])
+            word['picture'] = ".".join([data['translation'], 'jpg'])
+            word['topic'] = data['topic']
+            wordform = dict()
+            wordform['form_type'] = form_types[0]
+            wordform['translation'] = data['translation']
+            wordform['name'] = only_letters(word_parts[0])
+            wordform['vocal_name'] = word_parts[0]
+            wordform['pronunciation'] = word_parts[1]
+            try:
+                new_word = Word.objects.create(**word)
+                wordform['word'] = new_word
+                try:
+                    WordForm.objects.create(**wordform)
+                except:
+                    form.add_error(None, "Ошибка добавления формы слова ")
+                return redirect('add_adverb')
+            except:
+                form.add_error(None, "Ошибка добавления слова")
+    else:
+        form = AdverbsAddForm()
+
+    return render(request, "mycards/add_adverbs.html", {'form': form, 'title': 'ДОБАВИТЬ'})
