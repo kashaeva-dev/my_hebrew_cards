@@ -1,6 +1,13 @@
 from django.db import models
 from django.db.models.functions import Lower
 
+
+class Client(models.Model):
+    chat_id = models.CharField(max_length=20, verbose_name='Чат ID')
+    first_name = models.CharField(max_length=100, verbose_name='Имя')
+    last_name = models.CharField(max_length=100, verbose_name='Фамилия')
+
+
 # Create your models here.
 class Binyan(models.Model):
     type = models.CharField(max_length=15, verbose_name="Биньян")
@@ -76,6 +83,7 @@ class Word(models.Model):
     antonym_word = models.ForeignKey('self', on_delete=models.PROTECT, related_name='antonym', verbose_name='Антоним', null=True, blank=True)
     categories = models.ManyToManyField(Category, through='Grouping', related_name='words')
     time_create = models.DateTimeField(auto_now_add=True)
+    new_antonym = models.ManyToManyField('self', null=True, symmetrical=True)
 
 
     def __str__(self):
@@ -111,10 +119,24 @@ class WordForm(models.Model):
     example = models.TextField(null=True, blank=True)
     form_type = models.ForeignKey(FormType, on_delete=models.PROTECT, related_name='words', verbose_name='Тип формы', null=True)
     comment = models.TextField(null=True, blank=True)
+    client = models.ManyToManyField(Client, through='ClientWordForm', related_name='words')
 
 
     def __str__(self):
         return str(self.name)
+
+
+class ClientWordForm(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    wordform = models.ForeignKey(WordForm, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(verbose_name='Добавлено', auto_now_add=True)
+    is_learned = models.BooleanField(verbose_name='Выучено', default=False)
+
+
+# class BotActions(models.Model):
+#     clientwordform = models.ForeignKey(ClientWordForm, on_delete=models.CASCADE)
+#     action = models.CharField()
+
 
 class Expression(models.Model):
     expression = models.CharField(max_length=256, verbose_name='Выражение')
@@ -124,5 +146,3 @@ class Expression(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, related_name='expressions', verbose_name='Тема', null=True)
     question_id = models.ForeignKey('self', on_delete=models.PROTECT, related_name='answers', verbose_name='Номер вопроса', null=True)
     comment = models.TextField(null=True)
-
-

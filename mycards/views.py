@@ -15,11 +15,11 @@ from django.views.generic import ListView
 
 from .forms import *
 from .functions import *
+from .models import *
 
 morph = pymorphy2.MorphAnalyzer()
 
 
-# Create your views here.
 def cards_main(request):
     today = dt.datetime.now()
     D1 = dt.timedelta(days=3)
@@ -47,7 +47,7 @@ def cards_main(request):
 
     cloud.to_file(os.path.join(settings.BASE_DIR, 'mycards/static/img/wordcloud.png'))
 
-    
+
     return render(request, "mycards/cards.html", {'title': 'ГЛАВНАЯ'})
 
 

@@ -13,6 +13,11 @@ import os
 from pathlib import Path
 import sqlite3
 from django.db.backends.signals import connection_created
+from environs import Env
+
+env = Env()
+env.read_env()
+TG_BOT_TOKEN=env('TG_BOT_TOKEN')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
